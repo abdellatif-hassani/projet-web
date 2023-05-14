@@ -15,7 +15,7 @@ model User {
   name     String
   email    String @unique
   password String
-  role     Role   @default(USER)
+  role     Role?   @default(USER)
   posts    Post[]
 }
 
@@ -26,14 +26,14 @@ enum Role {
 
 model Post {
   id         Int        @id @default(autoincrement())
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  createdAt  DateTime?   @default(now())
+  updatedAt  DateTime?   @updatedAt
   title      String
   content    String?
   photo      String?
-  published  Boolean    @default(false)
-  author     User       @relation(fields: [authorId], references: [id])
-  authorId   Int
+  published  Boolean?    @default(false)
+  author     User?       @relation(fields: [authorId], references: [id])
+  authorId   Int?
   categories Category[]
   comments   Comment[]
 }

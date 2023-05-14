@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `post` MODIFY `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    MODIFY `updatedAt` DATETIME(3) NULL,
+    MODIFY `published` BOOLEAN NULL DEFAULT false;

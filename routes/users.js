@@ -1,31 +1,44 @@
 var express = require('express');
 var router = express.Router();
 
-/* Récupérer take utilisateurs à partir de la position
-skip. */
+const {getAllUsers, getUser, 
+      getUserByEmail, addUser,deleteUser,
+      updateUser} = require('../models/users');
+
+
+/* GET users listing.
+GET all users
+*/
 router.get('/', function(req, res, next) {
-  
+    getAllUsers().then(users=>res.json(users))
 });
 
-// Récupérer un utilisateur ayant l’id donné
-router.get('/:id ', function(req, res, next) {
-  
-});
+//return a specific user with the id given as a param 
+router.get('/:id([0-9]+)',(req,res,next)=>{
+    getUser(+req.params.id)
+      .then(user=>res.json(user))
+})
+//Search a user by email
+router.get('/:email',(req,res,next)=>{
+  getUserByEmail(req.params.email)
+    .then(user=>res.json(user))
+})
 
-// Ajouter un nouveau utilisateur envoyé sous format JSON
-router.post('/', function(req, res, next) {
-  
-});
+//create a user 
+router.post('/',(req,res,next)=>{
+    addUser(req.body).then(user=>res.json(user))
+})
 
-// Mettre à jour l'utilisateur envoyé dans le corps de la requête.
-router.patch('/', function(req, res, next) {
-  
-});
+//Delete a user 
+router.delete('/:id',(req,res,next)=>{
+   deleteUser(+req.params.id).then(user=>res.json(user))
+})
 
-// Supprimer l’utilisateur ayant l’id donné.
-router.delete('/:id ', function(req, res, next) {
-  
-});
+//Update a user 
+router.patch('/',(req,res,next)=>{
+    updateUser(req.body).then(user=>res.json(user))
+  // console.log(req.body)
+})
 
 
 module.exports = router;

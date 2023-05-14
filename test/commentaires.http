@@ -1,0 +1,27 @@
+
+
+###get all comments
+GET http://localhost:3000/commentaires HTTP/1.1
+###get user with id given
+GET http://localhost:3000/commentaires/2 HTTP/1.1
+
+###add a comment
+POST http://localhost:3000/commentaires HTTP/1.1
+Content-Type: application/json
+
+{
+    "email":"hassani@gmail.com",
+    "content":"AI (Artificial Intelligence) refers to the simulation of human intelligence in machines, enabling them to perform tasks that typically require human intelligence, such as visual perception, speech recognition, decision-making, and language translation."
+}
+
+###delete a comment with id given
+DELETE http://localhost:3000/commentaires/2 HTTP/1.1
+###modify comment 
+PUT http://localhost:3000/commentaires HTTP/1.1
+Content-Type: application/json
+
+{
+    "id":4,
+    "email":"hassani@gmail.com",
+    "content":"Cloud refers to the use of remote servers accessed over the internet to store, manage, and process data and applications, providing on-demand access to computing resources and services."
+}
