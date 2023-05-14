@@ -1,6 +1,7 @@
 const {PrismaClient } = require('@prisma/client');
 const { use } = require('../routes');
 
+const bcrypt = require('bcrypt');
 const prisma = new PrismaClient()
 
 //return all users
@@ -20,11 +21,22 @@ const getUserByEmail = (email)=>{
 }   
 
 //Add a user 
-const addUser = (user)=>{
-    return prisma.user.create({
+const addUser = async(user)=>{
+    const pass = user.password;
+    user.password = await hashPassword(pass);
+    const createdUser = await prisma.user.create({
         data: user
     })  
+    if(!createdUser)
+        throw new Error(`Error`);
+    return createdUser;
 }   
+
+//Function to hash the password 
+const hashPassword = async (password) => {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(password, salt);
+};
 
 //Delete a user 
 const deleteUser = (id)=>{

@@ -1,11 +1,56 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <title>Web Project</title>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div id="content">
+      <h1>ENSET Mohammedia</h1>
+      <p>This is the home page.</p>
+    </div>
+
+    <script>
+      // Add event listeners to the navigation links
+      document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = e.target.getAttribute('href').substring(1);
+          navigateTo(target);
+        });
+      });
+
+      // Handle navigation to different pages
+      function navigateTo(target) {
+        // Get the content container
+        const content = document.getElementById('content');
+
+        // Load the page content based on the target URL
+        if (target === 'home') {
+          content.innerHTML = `
+            <h1>ENSET Mohammedia</h1>
+            <p>This is the home page.</p> 
+          `;
+        } else if (target === 'about') {
+          content.innerHTML = `
+            <h1>About</h1>
+            <p>This is the about page.</p>
+          `;
+        } else if (target === 'contact') {
+          content.innerHTML = `
+            <h1>Contact</h1>
+            <p>This is the contact page.</p>
+          `;
+        }
+      }
+      
+    </script>
   </body>
 </html>

@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
+
 const {getAllUsers, getUser, 
       getUserByEmail, addUser,deleteUser,
       updateUser} = require('../models/users');
-
 
 /* GET users listing.
 GET all users

@@ -10,6 +10,8 @@ var articlesRouter = require('./routes/articles');
 var commentairesRouter = require('./routes/commentaires');
 var categoriesRouter = require('./routes/categories');
 
+const {authMiddleware} = require('./middlewares/authMiddleware')
+
 var app = express();
 
 // view engine setup
@@ -23,10 +25,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/articles', articlesRouter);
-app.use('/commentaires', commentairesRouter);
-app.use('/categories', categoriesRouter);
+app.use('/users', authMiddleware, usersRouter);
+app.use('/articles', authMiddleware, articlesRouter);
+app.use('/commentaires', authMiddleware, commentairesRouter);
+app.use('/categories', authMiddleware, categoriesRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

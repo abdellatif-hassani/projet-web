@@ -1,21 +1,25 @@
 
-###Search user by email
-GET http://localhost:3000/users/hassani@gmail.com HTTP/1.1
-
 ###get all users
 GET http://localhost:3000/users HTTP/1.1
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiZmFmYUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDEwNzM2NCwiZXhwIjoxNjg0MTEwOTY0fQ.XSJmoXsj4RLGfxFjcdi2iVgc_i3ufU_oPmllL9GdF9w
+
+###Search user by email
+GET http://localhost:3000/users/hassani@gmail.com HTTP/1.1
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiZmFmYUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDEwNzM2NCwiZXhwIjoxNjg0MTEwOTY0fQ.XSJmoXsj4RLGfxFjcdi2iVgc_i3ufU_oPmllL9GdF9w
+
+
 ###get user with id given
 GET http://localhost:3000/users/2 HTTP/1.1
 
 ###add a user
 POST http://localhost:3000/users HTTP/1.1
 Content-Type: application/json
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiZmFmYUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDEwNzM2NCwiZXhwIjoxNjg0MTEwOTY0fQ.XSJmoXsj4RLGfxFjcdi2iVgc_i3ufU_oPmllL9GdF9w
 
 {
-    "name":"admin",
-    "email":"enset@gmail.com",
-    "password":"dede",
-    "role":"ADMIN"
+    "name":"achari",
+    "email":"achari@gmail.com",
+    "password":"achari"
 }
 
 ###delete a user with id given
@@ -28,4 +32,14 @@ Content-Type: application/json
     "id":3,
     "email":"fafa@gmail.com",
     "password":"fafa"
+}
+
+###login and get JWT
+POST http://localhost:3000/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email":"fafa@gmail.com",
+    "password":"fafa",
+    "role":"USER"
 }
