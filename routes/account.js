@@ -1,17 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+
+const {addUser} = require('../models/users');
 //for login
 //bcrypt for hashing password
 const bcrypt = require('bcrypt');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
 
 //login 
 router.post('/login', async (req, res) => {
@@ -48,6 +45,7 @@ router.post('/login', async (req, res) => {
 
 });
 
+
 //Logout 
 router.post('/logout', function(req, res) {
   // Clear the cookie
@@ -58,9 +56,10 @@ router.post('/logout', function(req, res) {
 
 });
 
+
 //create a user 
 router.post('/newAccount',(req,res,next)=>{
-  addUser(req.body).then(user=>res.json(user))
+    addUser(req.body).then(user=>res.json(user))
 })
 
 module.exports = router;

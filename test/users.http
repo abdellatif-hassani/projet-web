@@ -1,11 +1,11 @@
 
 ###get all users
 GET http://localhost:3000/users HTTP/1.1
-Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiZmFmYUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDEwNzM2NCwiZXhwIjoxNjg0MTEwOTY0fQ.XSJmoXsj4RLGfxFjcdi2iVgc_i3ufU_oPmllL9GdF9w
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIzLCJlbWFpbCI6ImFjaGFyaUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDI1Njc3NCwiZXhwIjoxNjg0MjU3MDc0fQ.2evKM8OsRaezbc2ynirG5J0SHaSRBVRjWUOUeDMIvAE
 
 ###Search user by email
 GET http://localhost:3000/users/hassani@gmail.com HTTP/1.1
-Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiZmFmYUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDEwNzM2NCwiZXhwIjoxNjg0MTEwOTY0fQ.XSJmoXsj4RLGfxFjcdi2iVgc_i3ufU_oPmllL9GdF9w
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIzLCJlbWFpbCI6ImFjaGFyaUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDExMTc2NSwiZXhwIjoxNjg0MTE1MzY1fQ.SQV-oSedVa8WIKG9PMGGXcB5gdVGJY2TpM_b5l8m6iU
 
 
 ###get user with id given
@@ -14,7 +14,7 @@ GET http://localhost:3000/users/2 HTTP/1.1
 ###add a user
 POST http://localhost:3000/users HTTP/1.1
 Content-Type: application/json
-Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiZmFmYUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDEwNzM2NCwiZXhwIjoxNjg0MTEwOTY0fQ.XSJmoXsj4RLGfxFjcdi2iVgc_i3ufU_oPmllL9GdF9w
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIzLCJlbWFpbCI6ImFjaGFyaUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDI1NTkzMywiZXhwIjoxNjg0MjU2MjMzfQ.3cwonQbEmbJV3Fw4JFS4n3PNBthAOcD08qV39z_SwgM
 
 {
     "name":"achari",
@@ -39,7 +39,7 @@ POST http://localhost:3000/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "email":"fafa@gmail.com",
-    "password":"fafa",
+    "email":"achari@gmail.com",
+    "password":"achari",
     "role":"USER"
 }

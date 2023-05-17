@@ -2,55 +2,165 @@
 <html>
   <head>
     <title>Web Project</title>
+    <!-- tab icon -->
+    <link rel="icon" href="./images/enset.png">
+    <!-- adding cdn of bootstap and jquery and bootstrap icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" integrity="sha512-ZnR2wlLbSbr8/c9AgLg3jQPAattCUImNsae6NHYnS9KrIwRdcY9DxFotXhNAKIKbAXlRnujIqUWoXXwqyFOeIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Adding style.css and script.js  -->
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/script.js"></script>
   </head>
   <body>
-    <nav>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand nav-link" href="#" data-link="home">
+          <img src="./images/enset.png" alt="" class="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item px-2">
+              <a class="nav-link" href="#" data-link="home">Home</a>
+            </li>
+            <li class="nav-item px-2">
+              <a class="nav-link" href="#" data-link="about">About</a>
+            </li>
+            <li class="nav-item px-2">
+              <a class="nav-link" href="#" data-link="contact">Contact</a>
+            </li>
+            <li class="nav-item px-2">
+              <a class="nav-link" href="#" data-link="login">Sign in</a>
+            </li>
+            <li class="nav-item px-2">
+              <a class="nav-link" href="./logout" id="logoutButton">Sign out</a>
+            </li>
+            <li class="nav-item px-2">
+              <a class="nav-link" href="#" data-link="register">Register</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
 
-    <div id="content">
-      <h1>ENSET Mohammedia</h1>
-      <p>This is the home page.</p>
+<div class="container">
+
+    <!-- Home section -->
+    <div id="home" class="content">
+      <h1>Welcome to the Blog!</h1>
+      <p>This is the home page of the blog.</p>
     </div>
 
+    <!-- About Section -->
+    <div id="about" class="content d-none">
+      <h1>About us</h1>
+      <p>We are a group of web developers.</p>
+    </div>
+
+    <!-- Contact Section -->
+    <div id="contact" class="content d-none">
+      <h1>Contact Page!</h1>
+      <p>Get in touch with us.</p>
+    </div>
+
+
+    <!-- Login section -->
+    <div id="login" class="content d-none">
+      <section class="section register min-vh-10 py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Connectez-vous à votre compte</h5>
+                    <p class="text-center small">Enter votre nom d'utilisateur et votre mot de passe</p>
+                  </div>
+                  <form class="row g-3" action="./login" method="post" >
+                    <div class="col-12">
+                      <label for="email" class="form-label">Username</label>
+                      <div class="input-group has-validation">
+                        <input type="email" name="email" class="form-control" id="email" required>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label for="password" class="form-label">Mot de passe</label>
+                      <input type="password" name="password" class="form-control" id="password" required>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" name="connexion" id="loginForm">Se connecter</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Inscription section -->
+    <div id="register" class="content d-none">
+      <section class="section register min-vh-10 py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="pt-2 pb-4">
+                    <h5 class="card-title text-center pb-0 fs-4">Create an account</h5>
+                  </div>
+                  <form class="row g-3" action="/account/newAccount" method="post" id="registerForm">
+                    <div class="col-12">
+                      <label for="name" class="form-label">Full Name </label>
+                      <div class="input-group has-validation">
+                        <input type="text" name="name" class="form-control" id="nameR" required>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label for="email" class="form-label">Email</label>
+                      <div class="input-group has-validation">
+                        <input type="text" name="email" class="form-control" id="emailR" required>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control" id="passwordR" required>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="repassword" class="form-label">Repeat Password</label>
+                      <input type="password" name="repassword" class="form-control" id="repasswordR" required>
+                    </div>
+
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" name="connexion">Se connecter</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  
+  <!-- Fin container -->
+  </div>
+
     <script>
-      // Add event listeners to the navigation links
-      document.querySelectorAll('nav a').forEach(link => {
-        link.addEventListener('click', e => {
-          e.preventDefault();
-          const target = e.target.getAttribute('href').substring(1);
-          navigateTo(target);
-        });
-      });
 
-      // Handle navigation to different pages
-      function navigateTo(target) {
-        // Get the content container
-        const content = document.getElementById('content');
-
-        // Load the page content based on the target URL
-        if (target === 'home') {
-          content.innerHTML = `
-            <h1>ENSET Mohammedia</h1>
-            <p>This is the home page.</p> 
-          `;
-        } else if (target === 'about') {
-          content.innerHTML = `
-            <h1>About</h1>
-            <p>This is the about page.</p>
-          `;
-        } else if (target === 'contact') {
-          content.innerHTML = `
-            <h1>Contact</h1>
-            <p>This is the contact page.</p>
-          `;
-        }
-      }
       
     </script>
   </body>
 </html>
+
+
+
+

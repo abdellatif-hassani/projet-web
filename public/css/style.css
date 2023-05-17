@@ -1,0 +1,13 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.logo{
+  width: 6em;
+  margin-right: 2em;
+}
+
+.navbar-nav .nav-item a{
+  font-size: 1.3em;
+  color: rgb(25, 24, 24);
+}

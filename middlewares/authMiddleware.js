@@ -2,12 +2,13 @@ const jwt = require('jsonwebtoken');
 
 
 function authMiddleware(req, res, next) {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).send('Authorization header missing');
-    }
-    const token = authHeader.split(' ')[1];
-
+    // const authHeader = req.headers.authorization;
+    // if (!authHeader) {
+    //     return res.status(401).send('Authorization header missing');
+    // }
+    // const token = authHeader.split(' ')[1];
+    const token = req.cookies.token
+    // console.log(`verifid by:  ${token}`)
     // console.log(token)
     // console.log(authHeader)
     if (!token) {

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog SPA</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./js/script.js"></script>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#" class="nav-link" data-link="home">Home</a></li>
+            <li><a href="#" class="nav-link" data-link="login">Login</a></li>
+            <li><a href="#" class="nav-link" data-link="register">Register</a></li>
+        </ul>
+    </nav>
+
+    <div id="home" class="content">
+        <h1>Welcome to the Blog!</h1>
+        <p>This is the home page of the blog.</p>
+    </div>
+
+    <div id="login" class="content hidden">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <input type="text" placeholder="Username" id="username">
+            <input type="password" placeholder="Password" id="password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div id="register" class="content hidden">
+        <h1>Register</h1>
+        <form id="registerForm">
+            <input type="text" placeholder="Username" id="regUsername">
+            <input type="password" placeholder="Password" id="regPassword">
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+<section class="section register min-vh-10 py-4">
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                  <div class="card mb-3">
+
+                    <div class="card-body">
+
+                      <div class="pt-4 pb-2">
+                        <h5 class="card-title text-center pb-0 fs-4">Connectez-vous à votre compte</h5>
+                        <p class="text-center small">Enter votre nom d'utilisateur et votre mot de passe</p>
+                      </div>
+
+                      <form class="row g-3" action="/login" method="post" autocomplete="off">
+                        <div class="col-12">
+                          <label for="yourUsername" class="form-label">Username</label>
+                          <div class="input-group has-validation">
+                            <input type="text" name="username" value="" class="form-control" required>
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <label for="yourPassword" class="form-label">Mot de passe</label>
+                          <input type="password" name="password" class="form-control" required>
+                        </div>
+
+                        <div class="col-12">
+                          <button class="btn btn-primary w-100" type="submit" name="connexion">Se connecter</button>
+                        </div>
+
+                      </form>
+                      <div>
+                      <a href="./" class="comebackHome"><i class="bi bi-arrow-return-left"></i></a>
+                      <a href="" id="myHref" onclink="" class="linkInscription">Inscription</a>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+        </section>
