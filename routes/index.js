@@ -10,7 +10,8 @@ const prisma = new PrismaClient();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  const tokenCookie = req.cookies.token;
+  res.render('index', { tokenCookie });
 });
 
 //login 
@@ -44,7 +45,7 @@ router.post('/login', async (req, res) => {
   })
   console.log(req.cookies.token)
   // return res.redirect('/')
-  return res.json({redirect :'/'});
+  return res.json({redirect :'/?loggedin=true', message: 'Logged in successfully'});
 
 });
 
@@ -54,13 +55,9 @@ router.post('/logout', function(req, res) {
   res.clearCookie('token');
 
   // Send a response indicating successful logout
-  return res.json({message :'Logged out successfully',redirect :'/'});
+  return res.json({message :'Logged out successfully',redirect :'/?loggedOut=true'});
 
 });
 
-//create a user 
-router.post('/newAccount',(req,res,next)=>{
-  addUser(req.body).then(user=>res.json(user))
-})
 
 module.exports = router;

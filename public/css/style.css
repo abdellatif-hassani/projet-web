@@ -1,5 +1,6 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #EFEEE5;
 }
 
 .logo{
@@ -10,4 +11,21 @@ body {
 .navbar-nav .nav-item a{
   font-size: 1.3em;
   color: rgb(25, 24, 24);
+}
+
+.container{
+  margin-top: 1em;
+}
+
+
+.invalid-input {
+  border: 2px solid red;
+}
+
+#errorDiv {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  margin-bottom: 10px;
 }

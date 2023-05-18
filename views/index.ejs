@@ -12,6 +12,8 @@
     <!-- Adding style.css and script.js  -->
     <link rel="stylesheet" href="./css/style.css">
     <script src="./js/script.js"></script>
+    <!-- including a library for well designed alerts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
   </head>
   <body>
 
@@ -35,21 +37,46 @@
             <li class="nav-item px-2">
               <a class="nav-link" href="#" data-link="contact">Contact</a>
             </li>
-            <li class="nav-item px-2">
-              <a class="nav-link" href="#" data-link="login">Sign in</a>
-            </li>
-            <li class="nav-item px-2">
-              <a class="nav-link" href="./logout" id="logoutButton">Sign out</a>
-            </li>
-            <li class="nav-item px-2">
-              <a class="nav-link" href="#" data-link="register">Register</a>
-            </li>
+            <% if (typeof tokenCookie === 'undefined') { %>
+              <li class="nav-item px-2">
+                <a class="nav-link" href="#" data-link="login">Sign In</a>
+              </li>
+              <li class="nav-item px-2">
+                <a class="nav-link" href="#" data-link="register">Sign Up</a>
+              </li>
+            <% } else {%>
+              <li class="nav-item px-2">
+                <a class="nav-link" href="./logout" id="logoutButton">Sign Out</a>
+              </li>
+            <% } %>
           </ul>
         </div>
       </div>
     </nav>
 
 <div class="container">
+
+    <!-- Hidden alert element that notifies login success  -->
+    <div id="successAlert" class="alert alert-success" style="display: none;">
+      Logged in successfully!
+      <button type="button" id="closeAlertBtn" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <!-- Hidden alert element that notifies login success  -->
+    <div id="logoutAlert" class="alert alert-success" style="display: none;">
+      Logged Out successfully!
+      <button type="button" id="closeAlertBtnLogout" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <!-- div for to display errors  -->
+    <div id="errorDiv" style="display: none;"></div>
+
+
+    
 
     <!-- Home section -->
     <div id="home" class="content">
@@ -79,8 +106,8 @@
               <div class="card mb-3">
                 <div class="card-body">
                   <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">Connectez-vous à votre compte</h5>
-                    <p class="text-center small">Enter votre nom d'utilisateur et votre mot de passe</p>
+                    <h5 class="card-title text-center pb-0 fs-4">Log into your account</h5>
+                    <p class="text-center small">Enter your email and password</p>
                   </div>
                   <form class="row g-3" action="./login" method="post" >
                     <div class="col-12">
@@ -94,7 +121,7 @@
                       <input type="password" name="password" class="form-control" id="password" required>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" name="connexion" id="loginForm">Se connecter</button>
+                      <button class="btn btn-primary w-100" name="connexion" id="loginForm">Next</button>
                     </div>
                   </form>
                 </div>
@@ -140,7 +167,7 @@
                     </div>
 
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" name="connexion">Se connecter</button>
+                      <button class="btn btn-primary w-100" name="connexion">Sign Up</button>
                     </div>
                   </form>
                 </div>

@@ -7,28 +7,6 @@ $(document).ready(function() {
         $('#' + link).removeClass('d-none');
     });
 
-    // $('#loginForm').submit(function(e) {
-    //     e.preventDefault();
-    //     var username = $('#username').val();
-    //     var password = $('#password').val();
-    //     // Perform login logic here
-    //     console.log('Login:', username, password);
-    //     // Clear form fields
-    //     $('#username').val('');
-    //     $('#password').val('');
-    // });
-
-    // $('#registerForm').submit(function(e) {
-    //     e.preventDefault();
-    //     var username = $('#regUsername').val();
-    //     var password = $('#regPassword').val();
-    //     // Perform registration logic here
-    //     console.log('Register:', username, password);
-    //     // Clear form fields
-    //     $('#regUsername').val('');
-    //     $('#regPassword').val('');
-    // });
-
 
     //script for logout 
     $('#logoutButton').click(function() {
@@ -39,9 +17,11 @@ $(document).ready(function() {
             success: function(response) {
               // Check the response message
               if (response.message === 'Logged out successfully') {
-                // Redirect to the home page after successful logout
-                console.log('loged out')
-                window.location.href = '/';
+                // Store logout status in sessionStorage
+                sessionStorage.setItem('isLoggedOut', 'true');
+                // Redirect to the home page
+                window.location.href = response.redirect;
+                  
               } else {
                 console.log('Logout failed:', response);
               }
@@ -51,11 +31,16 @@ $(document).ready(function() {
             }
         });
       });
+      
+      $(document).on('click', '#closeAlertBtnLogout', function() {
+        $('#logoutAlert').fadeOut();
+        sessionStorage.removeItem('isLoggedOut'); // Remove login status from sessionStorage when the alert is closed manually
+      });
 
 
     //Loging using a json request 
     // Event handler for the login form submission
-    $('#s').on('submit', function(event) {
+    $('#loginForm').on('click', function(event) {
         event.preventDefault(); // Prevent form submission
 
         // Get the form data
@@ -68,13 +53,50 @@ $(document).ready(function() {
           method: 'POST',
           data: { email, password },
           success: function(response) {
+            sessionStorage.setItem('isLoggedIn', 'true'); // Store login status in sessionStorage
             window.location.href = response.redirect;
+            // $('.content').addClass('d-none');
+            // $('#home').removeClass('d-none');
           },
           error: function(xhr, status, error) {
             alert('Login failed: ' + xhr.responseJSON.error);
           }
         });
       });
+
+      // Attach event listener for the close button using event delegation
+      $(document).on('click', '#closeAlertBtn', function() {
+        $('#successAlert').fadeOut();
+        sessionStorage.removeItem('isLoggedIn'); // Remove login status from sessionStorage when the alert is closed manually
+      });
+
+      
+      // Show the alert to notify the user that they are logged in successfully
+      // dynamically after the page finishes loading
+      // Show the alert dynamically after the page finishes loading
+      $(window).on('load', function() {
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        const isLoggedOut  = sessionStorage.getItem('isLoggedOut');
+        if (window.location.pathname === '/' && isLoggedIn) {
+          $('#successAlert').fadeIn();
+          // Automatically hide the alert after 1 minute (60000 milliseconds)
+          setTimeout(function() {
+            $('#successAlert').fadeOut();
+            sessionStorage.removeItem('isLoggedIn'); // Remove login status from sessionStorage after hiding the alert
+          }, 20000);
+        }
+        console.log(isLoggedIn)
+        if (window.location.pathname === '/' && isLoggedOut) {
+          
+          $('#logoutAlert').fadeIn();
+          // Automatically hide the alert after 1 minute (60000 milliseconds)
+          setTimeout(function() {
+            $('#logoutAlert').fadeOut();
+            sessionStorage.removeItem('isLoggedOut'); // Remove login status from sessionStorage after hiding the alert
+          }, 20000);
+        }
+      });
+
 
 
 
@@ -89,24 +111,27 @@ $(document).ready(function() {
         // Validate name: accept characters that can be used in a name (letters, spaces, and hyphens)
         var nameRegex = /^[a-zA-Z\s-]+$/;
         if (!nameRegex.test(name)) {
-          alert('Please enter a valid name.');
+          $('#nameR').addClass('invalid-input');
+          // alert('Please enter a valid name.');
           return;
         }
         // Validate email format using a regular expression
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            console.log(repassword.length)
-          alert('Please enter a valid email address.');
+            $('#emailR').addClass('invalid-input');
+            // alert('Please enter a valid email address.');
           return;
         }
         // Validate password length
         if (password.length < 6) {
-          alert('Password must be at least 6 characters long.');
+          $('#passwordR').addClass('invalid-input');
+          // alert('Password must be at least 6 characters long.');
           return;
         }
         // Check if password and re-entered password match
         if (password !== repassword) {
-          alert('Passwords do not match.');
+          $('#passwordR, #repasswordR').addClass('invalid-input');
+          // alert('Passwords do not match.');
           return;
         }
     
@@ -123,15 +148,20 @@ $(document).ready(function() {
           data: userData,
           success: function(response) {
             // Handle the server response
-            alert('User registered successfully!');
-            // Perform any additional client-side operations if needed
+            window.location.href = '/?account_created=true';
+            // alert('User registered successfully!');
           },
-          error: function() {
-            alert('An error occurred. Please try again later.');
+          error: function(xhr) {
+            var errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'An error occurred. Please try again later.';
+            $('#errorDiv').html(errorMessage).fadeIn();
           }
         });
       });
 
   
+
+
+
+
 });
 

@@ -23,6 +23,16 @@ const getUserByEmail = (email)=>{
 //Add a user 
 const addUser = async(user)=>{
     const pass = user.password;
+    const email = user.email
+    // Check if a user with the same email already exists
+    const existingUser = await prisma.user.findUnique({
+        where: {
+        email,
+        },
+    }); 
+    if (existingUser) {
+        throw new Error('User with the same email already exists');
+    }
     user.password = await hashPassword(pass);
     const createdUser = await prisma.user.create({
         data: user
