@@ -40,13 +40,11 @@ $(document).ready(function() {
 
     //Loging using a json request 
     // Event handler for the login form submission
-    $('#loginForm').on('click', function(event) {
+    $('#loginForm').on('submit', function(event) {
         event.preventDefault(); // Prevent form submission
-
         // Get the form data
         var email = $('#email').val();
         var password = $('#password').val();
-        console.log(email)
         // Send a POST request to the server
         $.ajax({
           url: '/login',
@@ -58,8 +56,8 @@ $(document).ready(function() {
             // $('.content').addClass('d-none');
             // $('#home').removeClass('d-none');
           },
-          error: function(xhr, status, error) {
-            alert('Login failed: ' + xhr.responseJSON.error);
+          error: function(xhr) {
+            $('#errorDiv').html(xhr.responseJSON.error).fadeIn();
           }
         });
       });
@@ -110,26 +108,28 @@ $(document).ready(function() {
         var repassword = $('#repasswordR').val();
         // Validate name: accept characters that can be used in a name (letters, spaces, and hyphens)
         var nameRegex = /^[a-zA-Z\s-]+$/;
+        $('#nameR, #emailR, #passwordR, #repasswordR').removeClass('invalid-input'); // Remove 'invalid-input' class from all input fields
         if (!nameRegex.test(name)) {
+          $('#errorDiv').html('Invalid Name').fadeIn();
           $('#nameR').addClass('invalid-input');
-          // alert('Please enter a valid name.');
           return;
         }
         // Validate email format using a regular expression
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             $('#emailR').addClass('invalid-input');
-            // alert('Please enter a valid email address.');
+            $('#errorDiv').html('Invalid Email').fadeIn();
           return;
         }
         // Validate password length
         if (password.length < 6) {
           $('#passwordR').addClass('invalid-input');
-          // alert('Password must be at least 6 characters long.');
+          $('#errorDiv').html('Password must be more than 6 characters').fadeIn();
           return;
         }
         // Check if password and re-entered password match
         if (password !== repassword) {
+          $('#errorDiv').html('password doesn\'t match').fadeIn();
           $('#passwordR, #repasswordR').addClass('invalid-input');
           // alert('Passwords do not match.');
           return;
@@ -148,7 +148,11 @@ $(document).ready(function() {
           data: userData,
           success: function(response) {
             // Handle the server response
-            window.location.href = '/?account_created=true';
+            // Hide the register content
+            $('#register').addClass('d-none');
+            // Show the login content
+            $('#login').removeClass('d-none');
+            // window.location.href = '/';
             // alert('User registered successfully!');
           },
           error: function(xhr) {

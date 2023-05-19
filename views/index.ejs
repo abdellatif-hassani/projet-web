@@ -12,11 +12,11 @@
     <!-- Adding style.css and script.js  -->
     <link rel="stylesheet" href="./css/style.css">
     <script src="./js/script.js"></script>
-    <!-- including a library for well designed alerts -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+    
   </head>
   <body>
 
+    <!-- navbar -->
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
@@ -27,7 +27,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+          <ul class="navbar-nav ml-auto">
             <li class="nav-item px-2">
               <a class="nav-link" href="#" data-link="home">Home</a>
             </li>
@@ -64,7 +64,7 @@
       </button>
     </div>
 
-    <!-- Hidden alert element that notifies login success  -->
+    <!-- Hidden alert element that notifies logout success  -->
     <div id="logoutAlert" class="alert alert-success" style="display: none;">
       Logged Out successfully!
       <button type="button" id="closeAlertBtnLogout" class="close" aria-label="Close">
@@ -109,7 +109,7 @@
                     <h5 class="card-title text-center pb-0 fs-4">Log into your account</h5>
                     <p class="text-center small">Enter your email and password</p>
                   </div>
-                  <form class="row g-3" action="./login" method="post" >
+                  <form class="row g-3" action="./login" method="post" id="loginForm">
                     <div class="col-12">
                       <label for="email" class="form-label">Username</label>
                       <div class="input-group has-validation">
@@ -121,7 +121,7 @@
                       <input type="password" name="password" class="form-control" id="password" required>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" name="connexion" id="loginForm">Next</button>
+                      <button class="btn btn-primary w-100" name="connexion">Next</button>
                     </div>
                   </form>
                 </div>

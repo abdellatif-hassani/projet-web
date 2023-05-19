@@ -21,14 +21,13 @@ router.post('/login', async (req, res) => {
   
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
-    return res.status(404).send('User not found');
+    return res.status(404).json({ error: 'User not found' });
   }
 
   const passwordMatch = await bcrypt.compare(password, user.password);
   // const passwordMatch = (password==user.password)?1:0
   if (!passwordMatch) {
-    console.log(user.password)
-    return res.status(401).send('Incorrect password');
+    return res.status(401).json({ error: 'Incorrect password' });
   }
 
   // Generate a JWT token and return it to the user
@@ -43,9 +42,8 @@ router.post('/login', async (req, res) => {
     // maxAge: 1000000,
     // signed:true
   })
-  console.log(req.cookies.token)
   // return res.redirect('/')
-  return res.json({redirect :'/?loggedin=true', message: 'Logged in successfully'});
+  return res.json({redirect :'/', message: 'Logged in successfully'});
 
 });
 
@@ -55,7 +53,7 @@ router.post('/logout', function(req, res) {
   res.clearCookie('token');
 
   // Send a response indicating successful logout
-  return res.json({message :'Logged out successfully',redirect :'/?loggedOut=true'});
+  return res.json({message :'Logged out successfully',redirect :'/'});
 
 });
 
