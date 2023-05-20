@@ -7,8 +7,15 @@ const {getAllCategories, getCategorie,
 
 /* Récupérer take catégories à partir de la position
 skip. */
-router.get('/', function(req, res, next) {
-    getAllCategories().then(categories=>res.json(categories))
+router.get('/', async function(req, res, next) {
+    // getAllCategories().then(categories=>res.json(categories))
+    try {
+        const categories = await getAllCategories();
+        res.json({categories}); // Pass the fetched posts to the template engine
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        res.status(00).send('Internal Server Error');
+    }
 });
 
 // Récupérer une catégorie ayant l’id donné

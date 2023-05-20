@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+
+const {getAllPosts} = require('../models/articles');
+
 //for login
 //bcrypt for hashing password
 const bcrypt = require('bcrypt');
@@ -11,8 +14,10 @@ const prisma = new PrismaClient();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   const tokenCookie = req.cookies.token;
+  // sending tokenCookie to the index.ejs file to test if the user is authentificated
   res.render('index', { tokenCookie });
 });
+
 
 //login 
 router.post('/login', async (req, res) => {

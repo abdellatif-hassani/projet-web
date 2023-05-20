@@ -57,7 +57,8 @@ $(document).ready(function() {
             // $('#home').removeClass('d-none');
           },
           error: function(xhr) {
-            $('#errorDiv').html(xhr.responseJSON.error).fadeIn();
+            $('#errorDivP').html(xhr.responseJSON.error)
+            $('#errorDiv').fadeIn();
           }
         });
       });
@@ -66,6 +67,10 @@ $(document).ready(function() {
       $(document).on('click', '#closeAlertBtn', function() {
         $('#successAlert').fadeOut();
         sessionStorage.removeItem('isLoggedIn'); // Remove login status from sessionStorage when the alert is closed manually
+      });
+
+      $('#incorrectDataBtn').click(function() {
+        $('#errorDiv').fadeOut();
       });
 
       
@@ -83,7 +88,6 @@ $(document).ready(function() {
             sessionStorage.removeItem('isLoggedIn'); // Remove login status from sessionStorage after hiding the alert
           }, 20000);
         }
-        console.log(isLoggedIn)
         if (window.location.pathname === '/' && isLoggedOut) {
           
           $('#logoutAlert').fadeIn();
@@ -163,6 +167,63 @@ $(document).ready(function() {
       });
 
   
+
+      // Fetch and display post titles on the home page
+      $.ajax({
+        url: '/articles', // Change the URL to the appropriate server route for fetching post titles
+        method: 'GET',
+        success: function(response) {
+          // Assuming the response is an array of post titles
+          var posts = response.posts; // Adjust this based on the actual response format
+          // Iterate over the post titles and append them to the container
+          var postsContainer = $('#postTitles');
+          for (var i = 0; i < posts.length; i++) {
+            var postTitle = posts[i].title;
+            var createdAt = new Date(posts[i].createdAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+            var cardElement = $('<div>').addClass('card');
+            var cardBodyElement = $('<div>').addClass('card-body');
+            var titleElement = $('<h5>').addClass('card-title post-title').text(postTitle);
+            var createdAtElement = $('<p>').addClass('card-text').text('Published on: ' + createdAt);
+            cardBodyElement.append(titleElement, createdAtElement);
+            cardElement.append(cardBodyElement);
+            postsContainer.append(cardElement);
+          }
+        },
+        error: function(error) {
+          console.log('Error occurred while fetching post titles:', error);
+        }
+      });
+
+      //get listes of categories for database
+      // Fetch and display post titles on the home page
+      $.ajax({
+        url: '/categories', // Change the URL to the appropriate server route for fetching post titles
+        method: 'GET',
+        success: function(response) {
+          // Assuming the response is an array of post titles
+          var categories = response.categories;
+          // Iterate over the post titles and append them to the container
+          var categoriesListContainer = $('#categoriesList');
+          for (var i = 0; i < categories.length; i++) {
+            var category = categories[i].name;
+            var liElement = $('<li>').addClass('list-group-item d-flex justify-content-between align-items-center').text(category);
+            var spanBodyElement = $('<span>').addClass('badge bg-primary').text('1');
+            liElement.append(spanBodyElement);
+            categoriesListContainer.append(liElement);
+          }
+        },
+        error: function(error) {
+          console.log('Error occurred while fetching post titles:', error);
+        }
+      });
+
+
+
+
 
 
 

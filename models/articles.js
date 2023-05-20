@@ -4,8 +4,14 @@ const { use } = require('../routes');
 const prisma = new PrismaClient()
 
 //return all Posts
-const getAllPosts = ()=>{
-    return prisma.post.findMany();
+const getAllPosts = (take = 10 , skip = 0)=>{
+    return prisma.post.findMany({
+        orderBy: {
+            createdAt: 'desc',
+        },
+        take,
+        skip
+    });
 }   
 
 //return a specific Post with the id given as a param 

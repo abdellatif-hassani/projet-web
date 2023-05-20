@@ -7,14 +7,21 @@ const {getAllPosts, getPost,
 
 /* Récupérer take articles à partir de la position
 skip. */
-router.get('/', function(req, res, next) {
-    getAllPosts().then(posts=>res.json(posts))
+router.get('/', async function(req, res, next) {
+    try {
+        const posts = await getAllPosts();
+        res.json({posts}); // Pass the fetched posts to the template engine
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        res.status(500).send('Internal Server Error');
+      }
 });
 
 // Récupérer un article ayant l’id donné
 router.get('/:id', function(req, res, next) {
     getPost(+req.params.id)
         .then(post=>res.json(post))
+        .catch(res.status(404).json({message:'Not Found'}))
 });
 
 // Ajouter un nouveau article envoyé sous format JSON

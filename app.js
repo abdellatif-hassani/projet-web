@@ -28,9 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/account', accountRouter);
 app.use('/users', authMiddleware, usersRouter);
-app.use('/articles', authMiddleware, articlesRouter);
+app.use('/articles', articlesRouter);
 app.use('/commentaires', authMiddleware, commentairesRouter);
-app.use('/categories', authMiddleware, categoriesRouter);
+app.use('/categories', categoriesRouter);
 
 
 // catch 404 and forward to error handler
