@@ -18,10 +18,14 @@ router.get('/', async function(req, res, next) {
 });
 
 // Récupérer un article ayant l’id donné
-router.get('/:id', function(req, res, next) {
-    getPost(+req.params.id)
-        .then(post=>res.json(post))
-        .catch(res.status(404).json({message:'Not Found'}))
+router.get('/:id', async function(req, res, next) {
+    try {
+        const post = await getPost(+req.params.id);
+        res.json({post}); 
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        res.status(500).send('Internal Server Error');
+      }
 });
 
 // Ajouter un nouveau article envoyé sous format JSON

@@ -16,7 +16,10 @@ const getAllPosts = (take = 10 , skip = 0)=>{
 
 //return a specific Post with the id given as a param 
 const getPost = (id)=>{
-    return prisma.post.findUnique({where: {id}});
+    return prisma.post.findUnique({
+        where: {id},
+        include: { comments: true }
+    });
 }
 
 //Add a Post 

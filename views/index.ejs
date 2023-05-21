@@ -20,7 +20,7 @@
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand nav-link" href="#" data-link="home">
+        <a class="navbar-brand nav-link" href="#" id="linkToHome" data-link="home">
           <img src="./images/enset.png" alt="" class="logo">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item px-2">
-              <a class="nav-link" href="#" data-link="home">Home</a>
+              <a class="nav-link" href="#" id="linkToHome" data-link="home">Home</a>
             </li>
             <li class="nav-item px-2">
               <a class="nav-link" href="#" data-link="about">About</a>
@@ -74,7 +74,7 @@
 
     <!-- div for to display errors  -->
     <div id="errorDiv" style="display: none;">
-      <span id="errorDivP">czed</span>
+      <span id="errorDivP"></span>
       <button type="button" id="incorrectDataBtn" class="close" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -85,11 +85,21 @@
 
     <!-- Home section -->
     <div id="home" class="content">
-        <h1>Welcome to the Blog!</h1>
-        <p>This is the home page of the blog.</p>
         <div class="row">
+          <h2 class="card-title" id="titleofSection">Last posts</h2>
           <div class="col-md-8">
             <div id="postTitles"></div> <!-- Container for displaying post titles -->
+            <!-- Post Content Section -->
+            <div id="postDetail">
+                <div id="postContent" class="card">
+                  <!-- Post content will be dynamically updated here -->
+                </div>
+    
+                <!-- Post Comments Section -->
+                <div id="postComments" class="card">
+                  <!-- Post comments will be dynamically updated here -->
+                </div>
+            </div>
           </div>
           <!-- sidebar to show categories -->
           <div class="col-md-4">
@@ -102,56 +112,33 @@
               </div>
             </div>
           </div>
-          <!-- sidebar to show categories -->
-          <div class="col-md-4">
-            <div class="card">
-              <div class="card-body">
-                <h2>Categories</h2>
-                <ul class="list-group" id="categoriesList">
-                  <li class="list-group-item d-flex justify-content-between align-items-center">Category 1<span class="badge bg-primary">5</span></li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center">Category 2<span class="badge bg-primary">8</span></li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center">Category 3<span class="badge bg-primary">3</span></li>
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
     </div>
 
 
+
     <!-- Contact Section -->
-    <div id="contact" class="content d-none">
-      <div class="row">
-        <div class="col-md-8">
-          <h1>Latest Posts</h1>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title post-title">Post 1</h5>
-              <p class="card-text">Published on: May 1, 2023</p>
-              <p class="card-text">Comments: 10</p>
-            </div>
+    <div id="contact" class="row content d-none">
+      <div class="col-md-6">
+        <h1>Contact Us</h1>
+        <form id="contactForm" class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+            <div class="invalid-feedback">Please enter your name.</div>
           </div>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title post-title">Post 2</h5>
-              <p class="card-text">Published on: May 2, 2023</p>
-              <p class="card-text">Comments: 5</p>
-            </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+            <div class="invalid-feedback">Please enter a valid email address.</div>
           </div>
-          <!-- Add more post cards as needed -->
-        </div>
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-body">
-              <h2>Categories</h2>
-              <ul class="list-group">
-                <li class="list-group-item d-flex justify-content-between align-items-center">Category 1<span class="badge bg-primary">5</span></li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">Category 2<span class="badge bg-primary">8</span></li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">Category 3<span class="badge bg-primary">3</span></li>
-              </ul>
-            </div>
+          <div class="mb-3">
+            <label for="message" class="form-label">Message</label>
+            <textarea class="form-control" id="message" rows="5" placeholder="Enter your message" required></textarea>
+            <div class="invalid-feedback">Please enter your message.</div>
           </div>
-        </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
       </div>
     </div>
 
@@ -239,18 +226,24 @@
 
     <!-- About Section -->
     <div id="about" class="content d-none">
-        <main>
-          <section class="py-5">
-            <div class="container">
-              <h1>About</h1>
-              <p>Welcome to My Blog! We are a platform dedicated to providing high-quality content on various topics.</p>
-              <p>Our team of passionate writers aims to deliver informative and engaging articles to our readers.</p>
-              <p>Explore our blog and discover a wealth of knowledge and inspiration.</p>
-            </div>
-          </section>
-        </main>
-      
+      <header class="header bg-primary text-white text-center py-5">
+        <h1>About Us</h1>
+      </header>
+    
+      <section class="container mt-5">
+        <div class="row">
+          <div class="col-md-6">
+            <h2 class="mission-title">Our Mission</h2>
+            <p class="mission-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fermentum maximus diam, ac bibendum elit sodales vitae. Morbi pellentesque quam sed erat scelerisque, ac pulvinar justo volutpat. Sed vitae bibendum neque.</p>
+          </div>
+          <div class="col-md-6">
+            <h2 class="vision-title">Our Vision</h2>
+            <p class="vision-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fermentum maximus diam, ac bibendum elit sodales vitae. Morbi pellentesque quam sed erat scelerisque, ac pulvinar justo volutpat. Sed vitae bibendum neque.</p>
+          </div>
+        </div>
+      </section>
     </div>
+    
 
   
   <!-- Fin container -->

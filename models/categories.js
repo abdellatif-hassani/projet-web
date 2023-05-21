@@ -4,9 +4,24 @@ const { use } = require('../routes');
 const prisma = new PrismaClient()
 
 //return all Categories
-const getAllCategories = ()=>{
-    return prisma.Category.findMany();
-}   
+const getAllCategories = async () => {
+    const categories = await prisma.category.findMany({
+      include: {
+        posts: true,
+      },
+    });
+  
+    // Map the categories and add the count of posts to each category
+    const categoriesWithPostCount = categories.map((category) => {
+      return {
+        ...category,
+        postCount: category.posts.length,
+      };
+    });
+    // Sort the categories by the number of posts 
+    categoriesWithPostCount.sort((a, b) => b.postCount - a.postCount);
+    return categoriesWithPostCount;
+};
 
 //return a specific Categorie with the id given as a param 
 const getCategorie = (id)=>{
