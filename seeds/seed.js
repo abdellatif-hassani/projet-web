@@ -46,38 +46,52 @@ async function createCategories() {
   return categories;
 }
 
-// Create 100 articles
-async function createArticles(users, categories) {
-  const articles = await Promise.all(Array.from({ length: 100 }, async () => {
-    const article = await prisma.post.create({
-      data: {
-        title: faker.lorem.words(),
-        content: faker.lorem.paragraphs(),
-        photo: faker.image.technics(1234, 2345),
-        author: {
-          connect: { id: users[Math.floor(Math.random() * users.length)].id }
-        },
-        categories: {
-          connect: Array.from({ length: Math.floor(Math.random() * 4) + 1 }, () => {
-            return { id: categories[Math.floor(Math.random() * categories.length)].id };
-          })
-        }
-      }
-    });
 
-    // Create 0 to 20 comments for each article
-    await Promise.all(Array.from({ length: Math.floor(Math.random() * 21) }, async () => {
-      const comment = await prisma.comment.create({
+//Creating 100 posts
+async function createArticles(users, categories) {
+  const articles = await Promise.all(
+    Array.from({ length: 100 }, async () => {
+      const article = await prisma.post.create({
         data: {
-            email: faker.internet.email(),  
-            content: faker.lorem.sentences()
+          title: faker.lorem.words(),
+          content: faker.lorem.paragraphs(),
+          photo: faker.image.technics(1234, 2345),
+          author: {
+            connect: { id: users[Math.floor(Math.random() * users.length)].id }
+          },
+          categories: {
+            connect: Array.from({ length: Math.floor(Math.random() * 4) + 1 }, () => {
+              return { id: categories[Math.floor(Math.random() * categories.length)].id };
+            })
+          },
+          comments: {
+            create: Array.from({ length: Math.floor(Math.random() * 21) }, () => {
+              const randomUser = users[Math.floor(Math.random() * users.length)];
+              return {
+                email: randomUser.email,
+                content: faker.lorem.sentences(),
+                user: {
+                  connect: { id: randomUser.id }
+                }
+              };
+            })
+          }
+        },
+        include: {
+          comments: true
         }
       });
-      return comment;
-    }));
-  }));
+      return article;
+    })
+  );
   return articles;
 }
+
+
+
+
+
+
 
 async function seed() {
   try {
@@ -92,5 +106,33 @@ async function seed() {
     await prisma.$disconnect();
   }
 }
+
+
+
+
+//Script to delete all data from DataBase 
+async function deleteData() {
+  // Delete all comments
+  await prisma.comment.deleteMany();
+
+  // Delete all posts
+  await prisma.post.deleteMany();
+
+  // Delete all users
+  await prisma.user.deleteMany();
+
+  // Delete all categories
+  await prisma.category.deleteMany();
+
+  console.log('Data deleted successfully.');
+}
+
+// deleteData()
+//   .catch((error) => {
+//     console.error(error);
+//   })
+//   .finally(async () => {
+//     await prisma.$disconnect();
+//   });
 
 seed();

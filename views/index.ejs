@@ -18,7 +18,7 @@
 
     <!-- navbar -->
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-expand-lg ">
       <div class="container-fluid">
         <a class="navbar-brand nav-link" href="#" id="linkToHome" data-link="home">
           <img src="./images/enset.png" alt="" class="logo">
@@ -90,14 +90,21 @@
           <div class="col-md-8">
             <div id="postTitles"></div> <!-- Container for displaying post titles -->
             <!-- Post Content Section -->
-            <div id="postDetail">
+            <div id="postDetail" class="card">
                 <div id="postContent" class="card">
                   <!-- Post content will be dynamically updated here -->
                 </div>
     
                 <!-- Post Comments Section -->
                 <div id="postComments" class="card">
-                  <!-- Post comments will be dynamically updated here -->
+                  <div class="card text-dark">
+                    <h4 class="mb-0 px-4 py-2">Recent comments</h4>
+                    <p class="fw-light mb-2 px-4">Latest Comments section by users</p>
+                    <div id="commentsContainer">
+                      <!-- Post comments will be dynamically updated here -->
+                    </div>
+
+                  </div>
                 </div>
             </div>
           </div>
@@ -145,7 +152,7 @@
 
     <!-- Login section -->
     <div id="login" class="content d-none">
-      <section class="section register min-vh-10 py-4">
+      <section class="section min-vh-10 py-4">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
@@ -159,12 +166,12 @@
                     <div class="col-12">
                       <label for="email" class="form-label">Username</label>
                       <div class="input-group has-validation">
-                        <input type="email" name="email" class="form-control" id="email" required>
+                        <input type="email" name="email" class="form-control" id="emailLogin" required>
                       </div>
                     </div>
                     <div class="col-12">
                       <label for="password" class="form-label">Mot de passe</label>
-                      <input type="password" name="password" class="form-control" id="password" required>
+                      <input type="password" name="password" class="form-control" id="passwordLogin" required>
                     </div>
                     <div class="col-12">
                       <button class="btn btn-primary w-100" name="connexion">Next</button>
@@ -199,17 +206,17 @@
                     <div class="col-12">
                       <label for="email" class="form-label">Email</label>
                       <div class="input-group has-validation">
-                        <input type="text" name="email" class="form-control" id="emailR" required>
+                        <input type="text" name="email" class="form-control" id="emailRegister" required>
                       </div>
                     </div>
                     <div class="col-12">
                       <label for="password" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="passwordR" required>
+                      <input type="password" name="password" class="form-control" id="passwordRegister" required>
                     </div>
 
                     <div class="col-12">
                       <label for="repassword" class="form-label">Repeat Password</label>
-                      <input type="password" name="repassword" class="form-control" id="repasswordR" required>
+                      <input type="password" name="repassword" class="form-control" id="repasswordRegister" required>
                     </div>
 
                     <div class="col-12">
@@ -243,8 +250,11 @@
         </div>
       </section>
     </div>
+
+    
     
 
+      
   
   <!-- Fin container -->
   </div>

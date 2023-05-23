@@ -1,10 +1,13 @@
 // JavaScript code goes here
 $(document).ready(function() {
+  
     $('.nav-link').click(function(e) {
         e.preventDefault();
         var link = $(this).data('link');
         $('.content').addClass('d-none');
         $('#' + link).removeClass('d-none');
+        $('.nav-link').removeClass('active')
+        $(this).addClass('active')
     });
 
 
@@ -43,8 +46,8 @@ $(document).ready(function() {
     $('#loginForm').on('submit', function(event) {
         event.preventDefault(); // Prevent form submission
         // Get the form data
-        var email = $('#email').val();
-        var password = $('#password').val();
+        var email = $('#emailLogin').val();
+        var password = $('#passwordLogin').val();
         // Send a POST request to the server
         $.ajax({
           url: '/login',
@@ -107,34 +110,38 @@ $(document).ready(function() {
         e.preventDefault(); // Prevent form submission
         // Perform name, email, and password validation
         var name = $('#nameR').val();
-        var email = $('#emailR').val();
-        var password = $('#passwordR').val();
-        var repassword = $('#repasswordR').val();
+        var email = $('#emailRegister').val();
+        var password = $('#passwordRegister').val();
+        var repassword = $('#repasswordRegister').val();
         // Validate name: accept characters that can be used in a name (letters, spaces, and hyphens)
         var nameRegex = /^[a-zA-Z\s-]+$/;
-        $('#nameR, #emailR, #passwordR, #repasswordR').removeClass('invalid-input'); // Remove 'invalid-input' class from all input fields
+        $('#nameR, #emailRegister, #passwordRegister, #repasswordRegister').removeClass('invalid-input'); // Remove 'invalid-input' class from all input fields
         if (!nameRegex.test(name)) {
-          $('#errorDiv').html('Invalid Name').fadeIn();
+          $('#errorDivP').html('Invalid Name')
+          $('#errorDiv').fadeIn();
           $('#nameR').addClass('invalid-input');
           return;
         }
         // Validate email format using a regular expression
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            $('#emailR').addClass('invalid-input');
-            $('#errorDiv').html('Invalid Email').fadeIn();
+            $('#emailRegister').addClass('invalid-input');
+            $('#errorDivP').html('Invalid Email')
+            $('#errorDiv').fadeIn();
           return;
         }
         // Validate password length
         if (password.length < 6) {
-          $('#passwordR').addClass('invalid-input');
-          $('#errorDiv').html('Password must be more than 6 characters').fadeIn();
+          $('#passwordRegister').addClass('invalid-input');
+          $('#errorDivP').html('Password must be more than 6 characters')
+          $('#errorDiv').fadeIn();
           return;
         }
         // Check if password and re-entered password match
         if (password !== repassword) {
-          $('#errorDiv').html('password doesn\'t match').fadeIn();
-          $('#passwordR, #repasswordR').addClass('invalid-input');
+          $('#errorDivP').html('password doesn\'t match')
+          $('#errorDiv').fadeIn();
+          $('#passwordRegister, #repasswordRegister').addClass('invalid-input');
           // alert('Passwords do not match.');
           return;
         }
@@ -161,7 +168,8 @@ $(document).ready(function() {
           },
           error: function(xhr) {
             var errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'An error occurred. Please try again later.';
-            $('#errorDiv').html(errorMessage).fadeIn();
+            $('#errorDivP').html(errorMessage)
+            $('#errorDiv').fadeIn();
           }
         });
       });
@@ -203,9 +211,9 @@ $(document).ready(function() {
     
                 // Create the publication date element
                 var createdAtElement = $('<p>').addClass('card-text').text('Published on: ' + createdAt);
-    
+                var createdByElement = $('<p>').addClass('card-text').text('Published By: ' + post.author.name);
                 // Append the title and publication date elements to the card body
-                cardBodyElement.append(titleElement, createdAtElement);
+                cardBodyElement.append(titleElement, createdAtElement,createdByElement);
     
                 // Append the card body to the card
                 cardElement.append(cardBodyElement);
@@ -231,7 +239,6 @@ $(document).ready(function() {
       // Event handler for clicking on a post title
       $(document).on('click', '.post-title', function() {
         var postId = $(this).data('post-id'); 
-
         // Call the fetchPostData function to retrieve and display the post data
         fetchPostData(postId);
       });
@@ -251,16 +258,19 @@ $(document).ready(function() {
             var postContentContainer = $('#postContent');
             postContentContainer.html(postData.content);
             // Update the comments
-            var commentsContainer = $('#postComments');
+            var commentsContainer = $('#commentsContainer');
             commentsContainer.empty();
-            const commentTitle = $('<h3>').addClass('card-subtitle mb-2 text-muted').text('Comments');
-            commentsContainer.append(commentTitle);
             for (var i = 0; i < postData.comments.length; i++) {
               var comment = postData.comments[i];
-              var commentElement = $('<div>').addClass('comment card').text(comment.content);
-              commentsContainer.append(commentElement);
+              var card_body = $('<div>').addClass('card-body px-4 py-2')
+              var commentWriter = $('<h6>').addClass('fw-bold mb-1').text(comment.user.name)
+              var commentContent = $('<p>').addClass('mb-0').text(comment.content)
+              card_body.append(commentWriter, commentContent)
+              var lineHr = $('<hr>').addClass('my-0')
+              commentsContainer.append(card_body, lineHr);
             }
-            $('#postDetail').append(postContentContainer, commentsContainer);
+            $('#postComments').append(commentsContainer)
+            $('#postDetail').append(postContentContainer, $('#postComments'));
           },
           error: function(error) {
             console.log('Error occurred while fetching post data:', error);

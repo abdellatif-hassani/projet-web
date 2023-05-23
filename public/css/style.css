@@ -1,6 +1,6 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #EFEEE5;
+  background-color: #F7F6F6;
 }
 
 .logo{
@@ -20,6 +20,7 @@ body {
 
 nav{
   margin-bottom: 1em;
+  background-color: #EDF2F7;
 }
 
 
@@ -56,3 +57,27 @@ nav{
   opacity: 0.75;
 }
 
+
+.link-muted { 
+  color: #aaa;
+  font-size: 1.2em;
+  margin-left: 7px; 
+} 
+.link-muted:hover { 
+  color: #1266f1; 
+}
+
+
+.active{
+  font-weight: bold;
+}
+
+.post-title{
+    text-decoration: none;
+    color: #082f49;
+    margin-bottom: 1em;
+}
+
+.post-title:hover{
+  color: #082f49;
+}

@@ -2,13 +2,11 @@
 
 ###get all Post
 GET http://localhost:3000/articles HTTP/1.1
-Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIzLCJlbWFpbCI6ImFjaGFyaUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDE4MzM3MCwiZXhwIjoxNjg0MTg2OTcwfQ.TYam2XNQ0a5Guaq8Fh0Hw6Y60VsFeHQCWLEeQ84RHLA
 ###get Post with id given
 GET http://localhost:3000/articles/1 HTTP/1.1
 
 ###add a Post
 POST http://localhost:3000/articles HTTP/1.1
-Content-Type: application/json
 
 {
     "title": "What is DevOps",

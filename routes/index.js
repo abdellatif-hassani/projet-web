@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 
-const {getAllPosts} = require('../models/articles');
+// const {getAllPosts} = require('../models/articles');
+const {getUserByEmail} = require('../models/users');
 
 //for login
 //bcrypt for hashing password
@@ -23,8 +24,7 @@ router.get('/', function(req, res, next) {
 router.post('/login', async (req, res) => {
   // console.log(req.body)
   const { email, password } = req.body;
-  
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await getUserByEmail(email)
   if (!user) {
     return res.status(404).json({ error: 'User not found' });
   }
