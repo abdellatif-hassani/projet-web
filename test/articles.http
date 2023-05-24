@@ -5,6 +5,8 @@ GET http://localhost:3000/articles HTTP/1.1
 ###get Post with id given
 GET http://localhost:3000/articles/1 HTTP/1.1
 
+###get Posts of a categorie 
+GET http://localhost:3000/articles/categorie/1 HTTP/1.1
 ###add a Post
 POST http://localhost:3000/articles HTTP/1.1
 

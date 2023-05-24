@@ -177,15 +177,32 @@ $(document).ready(function() {
   
 
       // Fetch and display post titles on the home page
-      function home(){
+      function home(idCategorie=''){
+          var requestUrl = '/articles/'
+          if(idCategorie){
+            console.log(idCategorie)
+            requestUrl += 'categorie/' + idCategorie;
+          }
+          console.log(requestUrl)
           $.ajax({
-            url: '/articles', // Change the URL to the appropriate server route for fetching post titles
+            url: requestUrl, // Change the URL to the appropriate server route for fetching post titles
             method: 'GET',
             success: function(response) {
               // Assuming the response is an array of post objects
               var posts = response.posts; // Adjust this based on the actual response format
+              console.log(posts)
               var postsContainer = $('#postTitles');
               $('#postDetail').fadeOut();
+              if(idCategorie){
+                $('#postTitles').fadeIn();
+                $('#postTitles').empty();
+              }
+              if(!idCategorie){
+                var lastPosts = $('<h2>').addClass('card-title headTitle')
+                                                .attr('id','titleofSection')
+                                                .text('Last posts')
+                $('#postTitles').append(lastPosts)
+              }
               // Iterate over the posts and append them to the container
               for (var i = 0; i < posts.length; i++) {
                 var post = posts[i];
@@ -211,7 +228,9 @@ $(document).ready(function() {
     
                 // Create the publication date element
                 var createdAtElement = $('<p>').addClass('card-text').text('Published on: ' + createdAt);
-                var createdByElement = $('<p>').addClass('card-text').text('Published By: ' + post.author.name);
+                var createdByElement = $('<span>').addClass('card-text').text('Published By: ');
+                var createdByElementLink = $('<a href=\'#\'>').addClass('postAuthor').text(post.author.name);
+                createdByElement.append(createdByElementLink)
                 // Append the title and publication date elements to the card body
                 cardBodyElement.append(titleElement, createdAtElement,createdByElement);
     
@@ -232,7 +251,11 @@ $(document).ready(function() {
 
       $(document).on('click', '#linkToHome', function() {
         $('#postDetail').fadeOut();
+        $('#postContent').empty();
+        $('#commentsContainer').empty();
         $('#postTitles').fadeIn();
+        $('#postTitles').empty();
+        home()
       });
 
 
@@ -254,9 +277,11 @@ $(document).ready(function() {
             // Assuming the response contains post data (content and comments)
             var postData = response.post; // Adjust this based on the actual response format
             // Update the post content
-            $('#titleofSection').html(postData.title)
+            const titlePost =  $('<h2>').addClass('card-title headTitle').text(postData.title)
             var postContentContainer = $('#postContent');
-            postContentContainer.html(postData.content);
+            postContentContainerText = $('<span>').addClass('postContentText').text(postData.content)
+            postContentContainer.append(titlePost,postContentContainerText)
+            // postContentContainer.html(postData.content);
             // Update the comments
             var commentsContainer = $('#commentsContainer');
             commentsContainer.empty();
@@ -292,7 +317,20 @@ $(document).ready(function() {
           var categoriesListContainer = $('#categoriesList');
           for (var i = 0; i < categories.length; i++) {
             var category = categories[i].name;
-            var liElement = $('<li>').addClass('list-group-item d-flex justify-content-between align-items-center').text(category);
+            var liElementLink = $('<a>')
+                  .addClass('category-title')
+                  .attr('href', '#') // Placeholder link, change this to match your route for displaying a single post
+                  .data('categorie-id', categories[i].id) // Add the post ID as a data attribute
+                  .text(category)
+                  .on('click', function(event) {
+                    event.preventDefault(); // Prevent the default link behavior
+                
+                    var idCategorie = $(this).data('categorie-id');
+                    // console.log(idCategorie)
+                    home(idCategorie); // Call the home method with the idCategorie parameter
+                  });
+            var liElement = $('<li>').addClass('list-group-item d-flex justify-content-between align-items-center');
+            liElement.append(liElementLink)
             var spanBodyElement = $('<span>').addClass('badge bg-primary').text(categories[i].postCount);
             liElement.append(spanBodyElement);
             categoriesListContainer.append(liElement);

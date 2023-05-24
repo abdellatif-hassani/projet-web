@@ -85,41 +85,42 @@
 
     <!-- Home section -->
     <div id="home" class="content">
-        <div class="row">
-          <h2 class="card-title" id="titleofSection">Last posts</h2>
-          <div class="col-md-8">
-            <div id="postTitles"></div> <!-- Container for displaying post titles -->
-            <!-- Post Content Section -->
-            <div id="postDetail" class="card">
-                <div id="postContent" class="card">
-                  <!-- Post content will be dynamically updated here -->
-                </div>
-    
-                <!-- Post Comments Section -->
-                <div id="postComments" class="card">
-                  <div class="card text-dark">
-                    <h4 class="mb-0 px-4 py-2">Recent comments</h4>
-                    <p class="fw-light mb-2 px-4">Latest Comments section by users</p>
-                    <div id="commentsContainer">
-                      <!-- Post comments will be dynamically updated here -->
-                    </div>
-
-                  </div>
-                </div>
-            </div>
-          </div>
-          <!-- sidebar to show categories -->
-          <div class="col-md-4">
-            <div class="card">
-              <div class="card-body">
-                <h2>Categories</h2>
-                <ul class="list-group" id="categoriesList">
-                  
-                </ul>
+      <div class="row">
+        <div class="col-md-8">
+          <div id="postTitles">
+            <!-- <h2 class="card-title headTitle" id="titleofSection">Last posts</h2> -->
+          </div> <!-- Container for displaying post titles -->
+          <!-- Post Content Section -->
+          <div id="postDetail" class="card">
+              <div id="postContent" class="card">
+                <!-- Post content will be dynamically updated here -->
               </div>
+  
+              <!-- Post Comments Section -->
+              <div id="postComments" class="card">
+                <div class="card text-dark">
+                  <h4 class="mb-0 px-4 py-2 subTitle">Recent comments</h4>
+                  
+                  <div id="commentsContainer">
+                    <!-- Post comments will be dynamically updated here -->
+                  </div>
+
+                </div>
+              </div>
+          </div>
+        </div>
+        <!-- sidebar to show categories -->
+        <div class="col-md-4" id="categoriesSection">
+          <div class="card">
+            <div class="card-body">
+              <h2 class="headTitle">Categories</h2>
+              <ul class="list-group" id="categoriesList">
+                
+              </ul>
             </div>
           </div>
         </div>
+      </div>
     </div>
 
 
@@ -233,22 +234,22 @@
 
     <!-- About Section -->
     <div id="about" class="content d-none">
-      <header class="header bg-primary text-white text-center py-5">
-        <h1>About Us</h1>
-      </header>
-    
-      <section class="container mt-5">
-        <div class="row">
-          <div class="col-md-6">
-            <h2 class="mission-title">Our Mission</h2>
-            <p class="mission-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fermentum maximus diam, ac bibendum elit sodales vitae. Morbi pellentesque quam sed erat scelerisque, ac pulvinar justo volutpat. Sed vitae bibendum neque.</p>
-          </div>
-          <div class="col-md-6">
-            <h2 class="vision-title">Our Vision</h2>
-            <p class="vision-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fermentum maximus diam, ac bibendum elit sodales vitae. Morbi pellentesque quam sed erat scelerisque, ac pulvinar justo volutpat. Sed vitae bibendum neque.</p>
+      <div class="bg-light">
+        <div class="container py-5">
+          <div class="row h-100 align-items-center py-5">
+            <div class="col-lg-6">
+              <h1 class="display-4">About us page</h1>
+              <p class="lead text-muted mb-0">We are a group of student collaborating in web projects</p>
+              <p class="lead text-muted">Join us in <a href="#" class="text-muted"> 
+                          Github</a>
+              </p>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block"><img src="https://bootstrapious.com/i/snippets/sn-about/illus.png" alt="" class="img-fluid"></div>
           </div>
         </div>
-      </section>
+      </div>
+      
+      
     </div>
 
     

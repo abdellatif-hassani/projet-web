@@ -3,18 +3,29 @@ var router = express.Router();
 
 const {getAllPosts, getPost,  
         addPost, deletePost,
-        updatePost} = require('../models/articles');
+        updatePost,getPostsOfCategory} = require('../models/articles');
 
 /* Récupérer take articles à partir de la position
 skip. */
-router.get('/', async function(req, res, next) {
-    try {
-        const posts = await getAllPosts();
+ router.get('/', async function(req, res, next) {
+       try {
+         const posts = await getAllPosts();
         res.json({posts}); // Pass the fetched posts to the template engine
       } catch (error) {
         console.error('Error fetching posts:', error);
         res.status(500).send('Internal Server Error');
       }
+});
+
+router.get('/categorie/:id', async function(req, res, next) {
+  const idCategorie = +req.params.id;
+    try {
+      const posts = await getPostsOfCategory(idCategorie);
+      res.json({posts}); // Pass the fetched posts to the template engine
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      res.status(500).json({message:'Internal Server Error'});
+    }
 });
 
 // Récupérer un article ayant l’id donné

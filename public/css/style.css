@@ -72,12 +72,63 @@ nav{
   font-weight: bold;
 }
 
-.post-title{
+.card-body .post-title,.category-title{
     text-decoration: none;
-    color: #082f49;
-    margin-bottom: 1em;
+    font-size: 1.2em;
+    color: #4c0519;
+    font-weight: bold;
+    display: block;
+}
+.card-body .post-title:hover{
+  text-decoration: underline;
 }
 
-.post-title:hover{
+.headTitle{
+  font-family: sans-serif;
+  font-size: 2.1em;
   color: #082f49;
+}
+
+.subTitle{
+  font-family: sans-serif;
+  font-size: 1.4em;
+  color: #082f49;
+}
+
+.postAuthor{
+  color: #2563eb;
+}
+.postAuthor:hover{
+  text-decoration: none;
+}
+#postContent{
+  padding: 1em;
+}
+
+#categoriesSection{
+  margin-top: 3em;
+}
+.postContentText{
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+.social-link {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  border-radius: 50%;
+  transition: all 0.3s;
+  font-size: 0.9rem;
+}
+
+.social-link:hover,
+.social-link:focus {
+  background: #ddd;
+  text-decoration: none;
+  color: #555;
 }

@@ -17,6 +17,28 @@ const getAllPosts = (take = 10 , skip = 0)=>{
     });
 }   
 
+
+//return all Posts
+const getPostsOfCategory = (id) => {
+    return prisma.post.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        author: true,
+        categories: true, // Include the associated categories
+      },
+      where: {
+        categories: {
+          some: {
+            id: id, // Filter posts by category id
+          },
+        },
+      },
+    });
+  };
+  
+
 //return a specific Post with the id given as a param 
 const getPost = (id) => {
     return prisma.post.findUnique({
@@ -58,4 +80,4 @@ const updatePost = (article)=>{
 
 
 module.exports = {getAllPosts, getPost,  
-    addPost, deletePost, updatePost}
+    addPost, deletePost, updatePost, getPostsOfCategory}
