@@ -1,14 +1,57 @@
 // JavaScript code goes here
 $(document).ready(function() {
-  
+
+    //testToken : test if the user is loged in or not 
+    testToken()
+    
     $('.nav-link').click(function(e) {
         e.preventDefault();
         var link = $(this).data('link');
         $('.content').addClass('d-none');
         $('#' + link).removeClass('d-none');
+        
         $('.nav-link').removeClass('active')
         $(this).addClass('active')
     });
+
+    
+    function updateNavigationBar() {
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+      const isLoggedOut = sessionStorage.getItem('isLoggedOut');
+      console.log(`loged in : ${isLoggedIn}`)
+      console.log(`loged out : ${isLoggedOut}`)
+      if (isLoggedIn === 'true'){
+        // User is logged in
+        $('.nav-link[data-link="login"]').hide();
+        $('.nav-link[data-link="register"]').hide();
+        $('.profileDropdown').show();
+      } 
+      if (isLoggedOut === 'true'){
+        // User is not logged in
+        $('.nav-link[data-link="login"]').show();
+        $('.nav-link[data-link="register"]').show();
+        $('.profileDropdown').hide();
+      }
+    }
+    
+    
+    // console.log($.cookie('token'))
+    //testToken : test if the user is loged in or not 
+    function testToken() {
+      var token = $.cookie('token')
+      if (token !== undefined){
+        // User is logged in
+        $('.nav-link[data-link="login"]').hide();
+        $('.nav-link[data-link="register"]').hide();
+        $('.profileDropdown').show();
+      }else{
+        // User is not logged in
+        $('.nav-link[data-link="login"]').show();
+        $('.nav-link[data-link="register"]').show();
+        $('.profileDropdown').hide();
+      }
+    }
+
 
 
     //script for logout 
@@ -22,9 +65,14 @@ $(document).ready(function() {
               if (response.message === 'Logged out successfully') {
                 // Store logout status in sessionStorage
                 sessionStorage.setItem('isLoggedOut', 'true');
+                // Update the navigation bar
+                updateNavigationBar();
                 // Redirect to the home page
-                window.location.href = response.redirect;
-                  
+                // window.location.href = response.redirect;
+                $('.content').addClass('d-none');
+                $('#home').removeClass('d-none');
+                $('#logoutAlert').fadeIn();
+                
               } else {
                 console.log('Logout failed:', response);
               }
@@ -41,6 +89,10 @@ $(document).ready(function() {
       });
 
 
+      
+      
+
+
     //Loging using a json request 
     // Event handler for the login form submission
     $('#loginForm').on('submit', function(event) {
@@ -54,10 +106,16 @@ $(document).ready(function() {
           method: 'POST',
           data: { email, password },
           success: function(response) {
+            // $.cookie('token',response.token);
+            console.log($.cookie('token'));
+            // localStorage.setItem('token',response.token)
             sessionStorage.setItem('isLoggedIn', 'true'); // Store login status in sessionStorage
-            window.location.href = response.redirect;
-            // $('.content').addClass('d-none');
-            // $('#home').removeClass('d-none');
+            // Update the navigation bar
+            updateNavigationBar();
+            // window.location.href = response.redirect;
+            $('.content').addClass('d-none');
+            $('#home').removeClass('d-none');
+            $('#successAlert').fadeIn();
           },
           error: function(xhr) {
             $('#errorDivP').html(xhr.responseJSON.error)
@@ -109,17 +167,17 @@ $(document).ready(function() {
       $('#registerForm').submit(function(e) {
         e.preventDefault(); // Prevent form submission
         // Perform name, email, and password validation
-        var name = $('#nameR').val();
+        var name = $('#nameRegister').val();
         var email = $('#emailRegister').val();
         var password = $('#passwordRegister').val();
         var repassword = $('#repasswordRegister').val();
         // Validate name: accept characters that can be used in a name (letters, spaces, and hyphens)
         var nameRegex = /^[a-zA-Z\s-]+$/;
-        $('#nameR, #emailRegister, #passwordRegister, #repasswordRegister').removeClass('invalid-input'); // Remove 'invalid-input' class from all input fields
+        $('#nameRegister, #emailRegister, #passwordRegister, #repasswordRegister').removeClass('invalid-input'); // Remove 'invalid-input' class from all input fields
         if (!nameRegex.test(name)) {
           $('#errorDivP').html('Invalid Name')
           $('#errorDiv').fadeIn();
-          $('#nameR').addClass('invalid-input');
+          $('#nameRegister').addClass('invalid-input');
           return;
         }
         // Validate email format using a regular expression
@@ -180,17 +238,16 @@ $(document).ready(function() {
       function home(idCategorie=''){
           var requestUrl = '/articles/'
           if(idCategorie){
-            console.log(idCategorie)
+            // console.log(idCategorie)
             requestUrl += 'categorie/' + idCategorie;
           }
-          console.log(requestUrl)
+          // console.log(requestUrl)
           $.ajax({
             url: requestUrl, // Change the URL to the appropriate server route for fetching post titles
             method: 'GET',
             success: function(response) {
               // Assuming the response is an array of post objects
               var posts = response.posts; // Adjust this based on the actual response format
-              console.log(posts)
               var postsContainer = $('#postTitles');
               $('#postDetail').fadeOut();
               if(idCategorie){
@@ -343,6 +400,115 @@ $(document).ready(function() {
 
 
 
+      //Selecting user's info from DB 
+      $('.nav-link[data-link="userProfile"]').click(function(e) {
+          e.preventDefault(); // Prevent the default navigation behavior
+          const {userId, userName, userEmail}=getUserInformationFromToken();
+          // Update the user's name in the profile section
+          $('#userName').text(userName);
+          $('#userprofileEmail').text(userEmail);
+      });
+
+
+      function getUserInformationFromToken(){
+          const token = $.cookie('token')
+          // Decode the token payload using the atob function
+          const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+
+          // Access the user ID from the decoded token payload
+          const userId = tokenPayload.userId;
+        // Access the user name from the decoded token payload
+          const userName = tokenPayload.name;
+          const userEmail = tokenPayload.email;
+          return {userId, userName, userEmail}
+      }
+
+
+      //Edit Profile By User : 
+      //Selecting user's info from DB 
+      $('.nav-link[data-link="profileEdit"]').click(function(e) {
+          e.preventDefault(); // Prevent the default navigation behavior
+          // AJAX request to fetch user profile
+          const {userId, userName, userEmail}=getUserInformationFromToken();
+          // Update the user's name in the profile section
+          $('#idEdit').val(userId);
+          $('#nameEdit').val(userName);
+          $('#emailEdit').val(userEmail);
+    });
+
+
+
+
+    //validation of the of creatign account
+    $('#EditProfileForm').submit(function(e) {
+      e.preventDefault(); // Prevent form submission
+      // Perform name, email, and password validation
+      var id = $('#idEdit').val();
+      var name = $('#nameEdit').val();
+      var email = $('#emailEdit').val();
+      var password = $('#passwordEdit').val();
+      var repassword = $('#repasswordEdit').val();
+      // Validate name: accept characters that can be used in a name (letters, spaces, and hyphens)
+      var nameRegex = /^[a-zA-Z\s-]+$/;
+      $('#nameEdit, #emailEdit, #passwordEdit, #repasswordEdit').removeClass('invalid-input'); // Remove 'invalid-input' class from all input fields
+      if (!nameRegex.test(name)) {
+        $('#errorDivP').html('Invalid Name')
+        $('#errorDiv').fadeIn();
+        $('#nameEdit').addClass('invalid-input');
+        return;
+      }
+      // Validate email format using a regular expression
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+          $('#emailEdit').addClass('invalid-input');
+          $('#errorDivP').html('Invalid Email')
+          $('#errorDiv').fadeIn();
+        return;
+      }
+      // Validate password length
+      if (password.length < 6) {
+        $('#passwordEdit').addClass('invalid-input');
+        $('#errorDivP').html('Password must be more than 6 characters')
+        $('#errorDiv').fadeIn();
+        return;
+      }
+      // Check if password and re-entered password match
+      if (password !== repassword) {
+        $('#errorDivP').html('password doesn\'t match')
+        $('#errorDiv').fadeIn();
+        $('#passwordEdit, #repasswordEdit').addClass('invalid-input');
+        // alert('Passwords do not match.');
+        return;
+      }
+  
+      // If validation passes, send the data to the server
+      var userData = {
+        id:id,
+        name: name,
+        email: email,
+        password: password
+      };
+      console.log(userData)
+      $.ajax({
+        url: '/users',
+        method: 'PATCH',
+        data: userData,
+        success: function(response) {
+          // console.log(userData)
+          $('.content').addClass('d-none');
+          $('#userProfile').removeClass('d-none');
+
+          $('#editSuccessP').html('Modification is done')
+          $('#editSuccess').fadeIn();
+          $('#closeEditSuccess').click(function() {
+          $('#editSuccess').fadeOut();
+      });
+        },
+        error: function(error) {
+          console.log('Error occurred while fetching post titles:', error);
+        }
+      });
+    });
 
 
 

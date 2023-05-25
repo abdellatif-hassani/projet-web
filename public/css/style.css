@@ -28,13 +28,17 @@ nav{
   border: 2px solid red;
 }
 
-#errorDiv {
+#errorDiv,#editSuccess{
   background-color: #f8d7da;
   color: #721c24;
   padding: 10px;
   border: 1px solid #f5c6cb;
   width: 50%;
   margin: auto;
+}
+#editSuccess{
+  background-color: #22c55e;
+  color: #fff;
 }
 
 .close {
@@ -131,4 +135,139 @@ nav{
   background: #ddd;
   text-decoration: none;
   color: #555;
+}
+
+#postDetail{
+  margin-top: 3em;
+}
+
+.profileNav{
+  margin-left: 47em;
+}
+
+
+/* style for profile section */
+
+
+.dropdown-menu {
+  background-color: #f8f9fa;
+  border: none;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  left: auto !important;
+  right: 0 !important;
+}
+
+.dropdown-menu li .dropdown-item {
+  font-size: 1.1em;
+  color: #333;
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+
+.dropdown-menu li .dropdown-item:hover {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.dropdown-menu-end::before {
+  border-bottom: 7px solid #f8f9fa;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  content: "";
+  display: inline-block;
+  position: absolute;
+  right: 15px;
+  top: -7px;
+}
+
+.dropdown-menu-end {
+  left: auto !important;
+  right: 0 !important;
+}
+
+.profileDropdown{
+  position: absolute;
+  float: right;
+  right: 10em;
+}
+
+.card-user{
+  border:none;
+
+  position:relative;
+  overflow:hidden;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.card-user:before{
+  
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:4px;
+  height:100%;
+  background-color:#E1BEE7;
+  transform:scaleY(1);
+  transition:all 0.5s;
+  transform-origin: bottom
+}
+
+.card-user:after{
+  
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:4px;
+  height:100%;
+  background-color:#8E24AA;
+  transform:scaleY(0);
+  transition:all 0.5s;
+  transform-origin: bottom
+}
+
+.card-user:hover::after{
+  transform:scaleY(1);
+}
+
+
+.fonts{
+  font-size:11px;
+}
+
+
+.buttons button:nth-child(1){
+     border:1px solid #8E24AA !important;
+     color:#8E24AA;
+     height:40px;
+}
+
+.buttons button:nth-child(1):hover{
+     border:1px solid #8E24AA !important;
+     color:#fff;
+     height:40px;
+     background-color:#8E24AA;
+}
+
+.buttons button:nth-child(2){
+     border:1px solid #8E24AA !important;
+     background-color:#8E24AA;
+     color:#fff;
+      height:40px;
+}
+
+.button-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #e5e5e5;
+  border: none;
+  text-decoration: none;
+  color: #000000;
+  font-weight: bold;
+  cursor: pointer;
 }

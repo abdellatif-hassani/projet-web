@@ -127,12 +127,12 @@ async function deleteData() {
   console.log('Data deleted successfully.');
 }
 
-// deleteData()
-//   .catch((error) => {
-//     console.error(error);
-//   })
-//   .finally(async () => {
-//     await prisma.$disconnect();
-//   });
+deleteData()
+  .catch((error) => {
+    console.error(error);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
 
 seed();

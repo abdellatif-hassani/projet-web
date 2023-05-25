@@ -38,19 +38,20 @@ router.post('/login', async (req, res) => {
   // Generate a JWT token and return it to the user
   const jwt = require('jsonwebtoken');
 
-  const token = jwt.sign({ userId: user.id, email: user.email,
+  const token = jwt.sign({ userId: user.id, name: user.name, email: user.email,
        role: user.role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.EXPIRED_TIME });
 
   res.cookie("token", token, {
-    httpOnly: true,
+    // httpOnly: true,
+    expires: new Date(Date.now() + 900000)
     // secure: true,
-    // maxAge: 1000000,
+    // maxAge: 10000000000,
     // signed:true
   })
   // return res.redirect('/')
   return res.json({redirect :'/', message: 'Logged in successfully'});
-
 });
+
 
 //Logout 
 router.post('/logout', function(req, res) {

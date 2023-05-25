@@ -1,5 +1,5 @@
 const {PrismaClient } = require('@prisma/client');
-const { use } = require('../routes');
+
 
 const bcrypt = require('bcrypt');
 const prisma = new PrismaClient()
@@ -56,12 +56,20 @@ const deleteUser = (id)=>{
 }
 
 //Update a user
-const updateUser = (user)=>{
-    return prisma.user.update({
-        where: {id: user.id},
-        data: user
-    })
-}
+const updateUser = async (user) => {
+    const userId = parseInt(user.id);
+    const userPassword = await hashPassword(user.password);
+    // console.log(userPassword)
+    return await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: user.name,
+        email: user.email,
+        password: userPassword
+      }
+    });
+};
+  
 
 
 module.exports = {getAllUsers, getUser, getUserByEmail, 

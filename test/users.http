@@ -1,11 +1,11 @@
 
 ###get all users
 GET http://localhost:3000/users HTTP/1.1
-Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIzLCJlbWFpbCI6ImFjaGFyaUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDI1Njc3NCwiZXhwIjoxNjg0MjU3MDc0fQ.2evKM8OsRaezbc2ynirG5J0SHaSRBVRjWUOUeDMIvAE
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE2LCJlbWFpbCI6Imhhc3NhbmlAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2ODQ5NjUwNDMsImV4cCI6MTY4NDk2NTM0M30.gzqNrxlajCUeUzSsMk0k_emmDPElv6V59TsH9OHxEJc
 
 ###Search user by email
 GET http://localhost:3000/users/hassani@gmail.com HTTP/1.1
-Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIzLCJlbWFpbCI6ImFjaGFyaUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDExMTc2NSwiZXhwIjoxNjg0MTE1MzY1fQ.SQV-oSedVa8WIKG9PMGGXcB5gdVGJY2TpM_b5l8m6iU
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE2LCJlbWFpbCI6Imhhc3NhbmlAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2ODQ5NjUxNDYsImV4cCI6MTY4NDk2NTQ0Nn0.QZe7fLnwUgyosMWCUG3d3rq_Ro5_gUlYQnt149nCnNA
 
 
 ###get user with id given
@@ -14,7 +14,7 @@ GET http://localhost:3000/users/2 HTTP/1.1
 ###add a user
 POST http://localhost:3000/users HTTP/1.1
 Content-Type: application/json
-Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIzLCJlbWFpbCI6ImFjaGFyaUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY4NDI1NTkzMywiZXhwIjoxNjg0MjU2MjMzfQ.3cwonQbEmbJV3Fw4JFS4n3PNBthAOcD08qV39z_SwgM
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlbWFpbCI6ImJhY2hvdXJAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2ODQ5NjQ5MzcsImV4cCI6MTY4NDk2NTIzN30.MVwHg3Y9BRjyfgzauCcAwBEIlH0C5re87pZZ2aCDKas
 
 {
     "name":"achari",
@@ -27,19 +27,21 @@ DELETE http://localhost:3000/users/2 HTTP/1.1
 ###modify user 
 PATCH http://localhost:3000/users HTTP/1.1
 Content-Type: application/json
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJuYW1lIjoiQW5hcyBnaGVyZ2hvdWNoIiwiZW1haWwiOiJnaGVyZ2hvdWNoQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjg0OTgxNTQ4LCJleHAiOjE2ODQ5ODE4NDh9.N_jzcidqDiY_K0HUqck6VxFE1_Eb4t4aw797wVPOhvM
 
 {
-    "id":3,
-    "email":"fafa@gmail.com",
-    "password":"fafa"
+    "id":18,
+    "name":"Anas gherghouch",
+    "email":"gherghouch@gmail.com",
+    "password":"hassani"
 }
 
 ###login and get JWT
 POST http://localhost:3000/login HTTP/1.1
 Content-Type: application/json
 
-{
-    "email":"achari@gmail.com",
-    "password":"achari",
+{   
+    "email":"bachour@gmail.com",
+    "password":"bachour",
     "role":"USER"
 }

@@ -14,7 +14,7 @@ router.get('/', async function(req, res, next) {
         res.json({categories}); // Pass the fetched posts to the template engine
     } catch (error) {
         console.error('Error fetching posts:', error);
-        res.status(00).send('Internal Server Error');
+        res.status(500).send('Internal Server Error');
     }
 });
 

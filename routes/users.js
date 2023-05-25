@@ -35,9 +35,15 @@ router.delete('/:id',(req,res,next)=>{
 })
 
 //Update a user 
-router.patch('/',(req,res,next)=>{
-    updateUser(req.body).then(user=>res.json(user))
-  // console.log(req.body)
+router.patch('/',async (req,res,next)=>{
+  try {
+    // console.log(req.body)
+    const user = await updateUser(req.body);
+    res.json(user);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).send('Internal Server Error');
+  }
 })
 
 
