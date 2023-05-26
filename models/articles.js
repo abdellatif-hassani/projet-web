@@ -49,6 +49,7 @@ const getPostsOfCategory = (id) => {
           },
         },
       },
+      take:10
     });
   };
   
@@ -73,16 +74,17 @@ const getPost = (id) => {
 
 //Add a Post 
 const addPost = async (postData) => {
+  const randomInt = Math.floor(Math.random() * (1000 - 100 + 1)) + 100;
   try {
-    // Destructure the properties from the postData object
-    const { authorId, title, content, photo } = postData;
+    var { authorId, title, content, photo } = postData;
+    photoSrc = `https://picsum.photos/300/100/?${randomInt}`
+    console.log(authorId)
     const parsedAuthorId = parseInt(authorId, 10);
-    // Create a new post using the received data
     const post = await prisma.post.create({
       data: {
         title,
         content,
-        photo,
+        photo:photoSrc,
         author: {
           connect: { id: parsedAuthorId }
         }
@@ -91,7 +93,6 @@ const addPost = async (postData) => {
         author: true
       }
     });
-
     return post;
   } catch (error) {
     throw new Error('Error adding post');

@@ -58,7 +58,7 @@
                     <a class="nav-link dropdown-item" href="#" data-link="userProfile">Profile</a>
                   </li>
                   <li id="adminPanelLi" class="d-none">
-                    <a class="nav-link dropdown-item" href="#" data-link="userProfile" id="adminPanelLink">Admin Panel</a>
+                    <a class="nav-link dropdown-item" href="#" data-link="adminPanel" id="adminPanelLink">Admin Panel</a>
                   </li>
                   <li>
                     <a class="nav-link dropdown-item" href="./logout" id="logoutButton">Sign Out</a>
@@ -73,6 +73,48 @@
     </nav>
 
 <div class="container">
+
+    <div class=" admin-dashboard content d-none" id="adminPanel">
+      <div class="row">
+        <div class="col-lg-3 col-md-6">
+          <div class="card">
+            <h4>Users</h4>
+            <p>
+              <a href="">
+                Manage Users
+              </a>
+            </p>
+            <!-- Add more content or actions related to users -->
+          </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6">
+          <div class="card">
+            <h4>Posts</h4>
+            <p>
+              <a href="">
+                Manage Posts
+              </a>
+            </p>
+            <!-- Add more content or actions related to posts -->
+          </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6">
+          <div class="card">
+            <h4>Comments</h4>
+            <p>
+              <a href="">
+                Manage Comments
+              </a>
+            </p>
+            <!-- Add more content or actions related to comments -->
+          </div>
+        </div>
+        
+        <!-- Add more dashboard cards for additional functionalities -->
+      </div>
+    </div>
 
     <!-- Hidden alert element that notifies login success  -->
     <div id="successAlert" class="alert alert-success" style="display: none;">
@@ -292,7 +334,7 @@
                         <h5 class="mb-0" id="userName">Alexender Schidmt</h5>
                         <span id="userprofileEmail">Lorem Ipsum</span>
                         <div class="px-4 mt-3">
-                            <p class="fonts">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                            <p id="userprofileRole">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
                         </div>
                         <div class="buttons mt-4">
                             

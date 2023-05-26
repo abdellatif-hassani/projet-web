@@ -286,6 +286,9 @@ nav{
   color: #656262;
   margin-bottom: 10px;
 }
+.postPhoto{
+  margin-bottom: 1em;
+}
 
 .post-content {
   margin-bottom: 20px;
@@ -318,4 +321,29 @@ nav{
 
 .action-buttons {
   margin-top: 10px;
+}
+
+/* Admin section style */
+.admin-dashboard {
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.admin-dashboard .row {
+  margin-bottom: 20px;
+}
+
+.admin-dashboard .card {
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.admin-dashboard .card h4 {
+  margin-bottom: 20px;
+}
+.admin-dashboard .card p a{
+  text-decoration: none;
+}
+.admin-dashboard .card p a:hover{
+  color: #1e40af;
 }

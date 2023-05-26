@@ -193,7 +193,6 @@ $(document).ready(function() {
       function home(idCategorie=''){
           var requestUrl = '/articles/'
           if(idCategorie){
-            console.log('hello')
             requestUrl = '/articles/categorie/' + idCategorie;
           }
           console.log(requestUrl)
@@ -202,7 +201,6 @@ $(document).ready(function() {
             method: 'GET',
             success: function(response) {
               var posts = response.posts;
-              // console.log(posts)
               var postsContainer = $('#postTitles');
               $('#postDetail').fadeOut();
               if(idCategorie){
@@ -233,9 +231,11 @@ $(document).ready(function() {
     
                 var createdAtElement = $('<p>').addClass('post-date').text('Published on: ' + createdAt);
                 var createdByElement = $('<span>').addClass('card-text').text('Published By: ');
+                var src = post.photo;
                 var createdByElementLink = $("<a href=\'#\'>").addClass('postAuthor').text(post.author.name);
+                var postPhoto = $(`<img src=${src}>`).addClass('postPhoto')
                 createdByElement.append(createdByElementLink)
-                cardBodyElement.append(titleElement, createdAtElement,createdByElement);
+                cardBodyElement.append(titleElement, postPhoto, createdAtElement,createdByElement);
                 cardElement.append(cardBodyElement);
                 postsContainer.append(cardElement);
               }
@@ -275,8 +275,10 @@ $(document).ready(function() {
             // Update the post content
             const titlePost =  $('<h2>').addClass('card-title headTitle').text(postData.title)
             var postContentContainer = $('#postContent');
+            const src = postData.photo
+            var postPhoto = $(`<img src=${src}>`).addClass('postPhoto')
             postContentContainerText = $('<span>').addClass('postContentText').text(postData.content)
-            postContentContainer.append(titlePost,postContentContainerText)
+            postContentContainer.append(titlePost, postPhoto,postContentContainerText)
             var commentsContainer = $('#commentsContainer');
             commentsContainer.empty();
             for (var i = 0; i < postData.comments.length; i++) {
@@ -318,7 +320,7 @@ $(document).ready(function() {
                   .text(category)
                   .on('click', function(event) {
                     event.preventDefault();
-                
+                    $('#postContent').empty();
                     var idCategorie = $(this).data('categorie-id');
                     home(idCategorie); 
                   });
@@ -338,9 +340,10 @@ $(document).ready(function() {
       //Selecting user's info from DB 
       $('.nav-link[data-link="userProfile"]').click(function(e) {
           e.preventDefault(); 
-          const {userId, userName, userEmail}=getUserInformationFromToken();
+          const {userId, userName, userEmail,userRole}=getUserInformationFromToken();
           $('#userName').text(userName);
           $('#userprofileEmail').text(userEmail);
+          $('#userprofileRole').text(userRole);
       });
 
 
@@ -351,7 +354,8 @@ $(document).ready(function() {
           const userId = tokenPayload.userId;
           const userName = tokenPayload.name;
           const userEmail = tokenPayload.email;
-          return {userId, userName, userEmail}
+          const userRole = tokenPayload.role;
+          return {userId, userName, userEmail,userRole}
       }
 
       //get user's ID from token 
@@ -440,7 +444,9 @@ $(document).ready(function() {
           method: 'PATCH',
           data: userData,
           success: function(response) {
-            $('.nav-link[data-link="profileMyPosts"]').trigger('click');
+            // $('.nav-link[data-link="profileMyPosts"]').trigger('click');
+            $('.content').addClass('d-none');
+            $('#userProfile').removeClass('d-none');
 
             $('#editSuccessP').html('Modification is done')
             $('#editSuccess').fadeIn();

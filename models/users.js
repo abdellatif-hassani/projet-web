@@ -15,9 +15,13 @@ const getUser = (id)=>{
 }
 //Search user by email
 const getUserByEmail = (email)=>{
-    return prisma.user.findUnique({where: {
-        email
-    }});
+    return prisma.user.findUnique(
+        {
+            where: {
+               email
+            }
+        }
+    );
 }   
 
 //Add a user 

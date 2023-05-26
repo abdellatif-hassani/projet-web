@@ -22,11 +22,29 @@ async function createUsers() {
 
 // Create 1 user with the role "ADMIN"
 async function createAdmin() {
+  const existingAdmin = await prisma.user.findFirst({
+    where: {
+      email: 'admin@example.com'
+    }
+  });
+  if (existingAdmin) {
+    const admin = await prisma.user.update({
+      where: {
+        id: existingAdmin.id
+      },
+      data: {
+        name: 'admin',
+        password: 'adminpass',
+        role: 'ADMIN'
+      }
+    });
+    return admin;
+  }
   const admin = await prisma.user.create({
     data: {
       name: 'admin',
       email: 'admin@example.com',
-      password: 'adminpass', 
+      password: 'adminpass',
       role: 'ADMIN'
     }
   });
@@ -49,13 +67,25 @@ async function createCategories() {
 
 //Creating 100 posts
 async function createArticles(users, categories) {
+  var i=0
   const articles = await Promise.all(
     Array.from({ length: 100 }, async () => {
+      let lastPost = null;
+      // Check if any posts exist in the database
+      const existingPosts =  prisma.post.findMany();
+      if (existingPosts.length > 0) {
+        lastPost = await prisma.post.findFirst({
+          orderBy: {
+            id: 'desc'
+          }
+        });
+      }
+      const photo = lastPost ? `https://picsum.photos/300/100/?${lastPost.id}` : `https://picsum.photos/300/100/?${++i}`;
       const article = await prisma.post.create({
         data: {
           title: faker.lorem.words(),
           content: faker.lorem.paragraphs(),
-          photo: faker.image.technics(1234, 2345),
+          photo: photo,
           author: {
             connect: { id: users[Math.floor(Math.random() * users.length)].id }
           },
@@ -89,50 +119,41 @@ async function createArticles(users, categories) {
 
 
 
-
-
-
-
 async function seed() {
-  try {
-    const users = await createUsers();
-    const admin = await createAdmin();
-    const categories = await createCategories();
-    const articles = await createArticles(users, categories);
-    console.log('Data seeded successfully.');
-  } catch (error) {
-    console.error(error);
-  } finally {
-    await prisma.$disconnect();
-  }
+  deleteData().then(async ()=>{
+    try {
+      const users = await createUsers();
+      const admin = await createAdmin();
+      const categories = await createCategories();
+      const articles = await createArticles(users, categories);
+      console.log('Data seeded successfully.');
+    } catch (error) {
+      console.error(error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  })
 }
 
 
-
-
-//Script to delete all data from DataBase 
 async function deleteData() {
-  // Delete all comments
   await prisma.comment.deleteMany();
 
-  // Delete all posts
   await prisma.post.deleteMany();
 
-  // Delete all users
   await prisma.user.deleteMany();
 
-  // Delete all categories
   await prisma.category.deleteMany();
 
   console.log('Data deleted successfully.');
 }
 
-deleteData()
-  .catch((error) => {
-    console.error(error);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+// deleteData()
+//   .catch((error) => {
+//     console.error(error);
+//   })
+//   .finally(async () => {
+//     await prisma.$disconnect();
+//   });
 
 seed();
