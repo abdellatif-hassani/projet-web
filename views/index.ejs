@@ -57,8 +57,8 @@
                   <li>
                     <a class="nav-link dropdown-item" href="#" data-link="userProfile">Profile</a>
                   </li>
-                  <li>
-                    <a class="nav-link dropdown-item" href="#posts" id="usersPosts">Posts</a>
+                  <li id="adminPanelLi" class="d-none">
+                    <a class="nav-link dropdown-item" href="#" data-link="userProfile" id="adminPanelLink">Admin Panel</a>
                   </li>
                   <li>
                     <a class="nav-link dropdown-item" href="./logout" id="logoutButton">Sign Out</a>
@@ -295,9 +295,7 @@
                             <p class="fonts">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
                         </div>
                         <div class="buttons mt-4">
-                            <!-- <button class="btn btn-outline-primary px-4 mx-2" data-link="profileEdit">
-                              Edit Profile
-                            </button> -->
+                            
                             <a class="nav-link button-link" href="#" data-link="profileEdit">Edit</a>
                             <a class="nav-link button-link" href="#" data-link="profileAddPost">Add Post</a>
                             <a class="nav-link button-link" href="#" data-link="profileMyPosts">My Posts</a>
@@ -357,7 +355,61 @@
       </section>
     </div>
 
-      
+
+    
+    <!-- Add Post section -->
+    <div id="profileAddPost" class="content d-none">
+      <div class="container col-8">
+        <h2>Add a Post</h2>
+        <form id="addPostForm">
+          <div class="mb-3">
+            <label for="postTitleAdd" class="form-label">Title</label>
+            <input type="text" class="form-control" id="postTitleAdd" required>
+          </div>
+          <div class="mb-3">
+            <label for="postContentAdd" class="form-label">Content</label>
+            <textarea class="form-control" id="postContentAdd" rows="4" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="postPhotoAdd" class="form-label">Photo</label>
+            <input type="file" class="form-control" id="postPhotoAdd">
+          </div>
+          <button type="submit" class="btn btn-primary">Add Post</button>
+        </form>
+      </div>
+    </div>
+
+
+    <!-- User's Posts Section -->
+    <div id="profileMyPosts" class="content d-none row">
+        <!-- content comes from Db -->
+    </div>
+
+    <!-- Edit Post section -->
+    <div id="profileEditPost" class="content d-none">
+      <div class="container col-8">
+        <h2>Edit Post</h2>
+        <form id="editPostForm">
+          <div class="mb-3">
+            <input type="hidden" class="form-control" id="postIDEdit" >
+            <label for="postTitleEdit" class="form-label">Title</label>
+            <input type="text" class="form-control" id="postTitleEdit" required>
+          </div>
+          <div class="mb-3">
+            <label for="postContentEdit" class="form-label">Content</label>
+            <textarea class="form-control" id="postContentEdit" rows="4" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="postPhotoEdit" class="form-label">Photo</label>
+            <input type="file" class="form-control" id="postPhotoEdit">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+      </div>
+    </div>  
+
+
+
   
   <!-- Fin container -->
   </div>

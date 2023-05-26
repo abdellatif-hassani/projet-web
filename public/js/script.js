@@ -1,9 +1,9 @@
-// JavaScript code goes here
+
 $(document).ready(function() {
 
     //testToken : test if the user is loged in or not 
     testToken()
-    
+
     $('.nav-link').click(function(e) {
         e.preventDefault();
         var link = $(this).data('link');
@@ -13,37 +13,22 @@ $(document).ready(function() {
         $('.nav-link').removeClass('active')
         $(this).addClass('active')
     });
-
     
-    function updateNavigationBar() {
-      const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-      const isLoggedOut = sessionStorage.getItem('isLoggedOut');
-      console.log(`loged in : ${isLoggedIn}`)
-      console.log(`loged out : ${isLoggedOut}`)
-      if (isLoggedIn === 'true'){
-        // User is logged in
-        $('.nav-link[data-link="login"]').hide();
-        $('.nav-link[data-link="register"]').hide();
-        $('.profileDropdown').show();
-      } 
-      if (isLoggedOut === 'true'){
-        // User is not logged in
-        $('.nav-link[data-link="login"]').show();
-        $('.nav-link[data-link="register"]').show();
-        $('.profileDropdown').hide();
-      }
-    }
-    
-    
-    // console.log($.cookie('token'))
     //testToken : test if the user is loged in or not 
     function testToken() {
       var token = $.cookie('token')
       if (token !== undefined){
         // User is logged in
+        const userRole = getUserRoleFromToken();
         $('.nav-link[data-link="login"]').hide();
         $('.nav-link[data-link="register"]').hide();
-        $('.profileDropdown').show();
+        const profileDropdown = $('.profileDropdown')
+        profileDropdown.show();
+        if(userRole==='ADMIN'){
+          $('#adminPanelLi').removeClass('d-none')
+        }else{
+          $('#adminPanelLi').addClass('d-none')
+        }
       }else{
         // User is not logged in
         $('.nav-link[data-link="login"]').show();
@@ -53,22 +38,14 @@ $(document).ready(function() {
     }
 
 
-
     //script for logout 
     $('#logoutButton').click(function() {
-        // Send AJAX request to the server to clear the cookie
         $.ajax({
             url: '/logout',
             type: 'POST',
             success: function(response) {
-              // Check the response message
               if (response.message === 'Logged out successfully') {
-                // Store logout status in sessionStorage
-                sessionStorage.setItem('isLoggedOut', 'true');
-                // Update the navigation bar
-                updateNavigationBar();
-                // Redirect to the home page
-                // window.location.href = response.redirect;
+                testToken();
                 $('.content').addClass('d-none');
                 $('#home').removeClass('d-none');
                 $('#logoutAlert').fadeIn();
@@ -88,31 +65,24 @@ $(document).ready(function() {
         sessionStorage.removeItem('isLoggedOut'); // Remove login status from sessionStorage when the alert is closed manually
       });
 
-
+      $(document).on('click', '.dropdown-toggle', function() {
+        $('#home').removeClass('d-none');
+      });
       
-      
-
 
     //Loging using a json request 
-    // Event handler for the login form submission
     $('#loginForm').on('submit', function(event) {
-        event.preventDefault(); // Prevent form submission
+        event.preventDefault(); 
         // Get the form data
         var email = $('#emailLogin').val();
         var password = $('#passwordLogin').val();
-        // Send a POST request to the server
         $.ajax({
           url: '/login',
           method: 'POST',
           data: { email, password },
           success: function(response) {
-            // $.cookie('token',response.token);
-            console.log($.cookie('token'));
-            // localStorage.setItem('token',response.token)
-            sessionStorage.setItem('isLoggedIn', 'true'); // Store login status in sessionStorage
             // Update the navigation bar
-            updateNavigationBar();
-            // window.location.href = response.redirect;
+            testToken();
             $('.content').addClass('d-none');
             $('#home').removeClass('d-none');
             $('#successAlert').fadeIn();
@@ -124,10 +94,9 @@ $(document).ready(function() {
         });
       });
 
-      // Attach event listener for the close button using event delegation
       $(document).on('click', '#closeAlertBtn', function() {
         $('#successAlert').fadeOut();
-        sessionStorage.removeItem('isLoggedIn'); // Remove login status from sessionStorage when the alert is closed manually
+        sessionStorage.removeItem('isLoggedIn'); 
       });
 
       $('#incorrectDataBtn').click(function() {
@@ -137,35 +106,29 @@ $(document).ready(function() {
       
       // Show the alert to notify the user that they are logged in successfully
       // dynamically after the page finishes loading
-      // Show the alert dynamically after the page finishes loading
       $(window).on('load', function() {
         const isLoggedIn = sessionStorage.getItem('isLoggedIn');
         const isLoggedOut  = sessionStorage.getItem('isLoggedOut');
         if (window.location.pathname === '/' && isLoggedIn) {
           $('#successAlert').fadeIn();
-          // Automatically hide the alert after 1 minute (60000 milliseconds)
           setTimeout(function() {
             $('#successAlert').fadeOut();
-            sessionStorage.removeItem('isLoggedIn'); // Remove login status from sessionStorage after hiding the alert
+            sessionStorage.removeItem('isLoggedIn');
           }, 20000);
         }
         if (window.location.pathname === '/' && isLoggedOut) {
           
           $('#logoutAlert').fadeIn();
-          // Automatically hide the alert after 1 minute (60000 milliseconds)
           setTimeout(function() {
             $('#logoutAlert').fadeOut();
-            sessionStorage.removeItem('isLoggedOut'); // Remove login status from sessionStorage after hiding the alert
+            sessionStorage.removeItem('isLoggedOut');
           }, 20000);
         }
       });
 
-
-
-
       //validation of the of creatign account
       $('#registerForm').submit(function(e) {
-        e.preventDefault(); // Prevent form submission
+        e.preventDefault(); 
         // Perform name, email, and password validation
         var name = $('#nameRegister').val();
         var email = $('#emailRegister').val();
@@ -204,7 +167,6 @@ $(document).ready(function() {
           return;
         }
     
-        // If validation passes, send the data to the server
         var userData = {
           name: name,
           email: email,
@@ -216,13 +178,8 @@ $(document).ready(function() {
           method: 'POST',
           data: userData,
           success: function(response) {
-            // Handle the server response
-            // Hide the register content
             $('#register').addClass('d-none');
-            // Show the login content
             $('#login').removeClass('d-none');
-            // window.location.href = '/';
-            // alert('User registered successfully!');
           },
           error: function(xhr) {
             var errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'An error occurred. Please try again later.';
@@ -232,22 +189,20 @@ $(document).ready(function() {
         });
       });
 
-  
-
       // Fetch and display post titles on the home page
       function home(idCategorie=''){
           var requestUrl = '/articles/'
           if(idCategorie){
-            // console.log(idCategorie)
-            requestUrl += 'categorie/' + idCategorie;
+            console.log('hello')
+            requestUrl = '/articles/categorie/' + idCategorie;
           }
-          // console.log(requestUrl)
+          console.log(requestUrl)
           $.ajax({
-            url: requestUrl, // Change the URL to the appropriate server route for fetching post titles
+            url: requestUrl,
             method: 'GET',
             success: function(response) {
-              // Assuming the response is an array of post objects
-              var posts = response.posts; // Adjust this based on the actual response format
+              var posts = response.posts;
+              // console.log(posts)
               var postsContainer = $('#postTitles');
               $('#postDetail').fadeOut();
               if(idCategorie){
@@ -260,7 +215,6 @@ $(document).ready(function() {
                                                 .text('Last posts')
                 $('#postTitles').append(lastPosts)
               }
-              // Iterate over the posts and append them to the container
               for (var i = 0; i < posts.length; i++) {
                 var post = posts[i];
                 var postTitle = post.title;
@@ -269,32 +223,20 @@ $(document).ready(function() {
                   month: 'long',
                   day: 'numeric'
                 });
-    
-                // Create the card element
                 var cardElement = $('<div>').addClass('card');
-    
-                // Create the card body element
                 var cardBodyElement = $('<div>').addClass('card-body');
-    
-                // Create the title element as a link to the post content
                 var titleElement = $('<a>')
                   .addClass('card-title post-title')
-                  .attr('href', '#') // Placeholder link, change this to match your route for displaying a single post
-                  .data('post-id', post.id) // Add the post ID as a data attribute
+                  .attr('href', '#')
+                  .data('post-id', post.id) 
                   .text(postTitle);
     
-                // Create the publication date element
-                var createdAtElement = $('<p>').addClass('card-text').text('Published on: ' + createdAt);
+                var createdAtElement = $('<p>').addClass('post-date').text('Published on: ' + createdAt);
                 var createdByElement = $('<span>').addClass('card-text').text('Published By: ');
-                var createdByElementLink = $('<a href=\'#\'>').addClass('postAuthor').text(post.author.name);
+                var createdByElementLink = $("<a href=\'#\'>").addClass('postAuthor').text(post.author.name);
                 createdByElement.append(createdByElementLink)
-                // Append the title and publication date elements to the card body
                 cardBodyElement.append(titleElement, createdAtElement,createdByElement);
-    
-                // Append the card body to the card
                 cardElement.append(cardBodyElement);
-    
-                // Append the card to the container
                 postsContainer.append(cardElement);
               }
             },
@@ -315,31 +257,26 @@ $(document).ready(function() {
         home()
       });
 
-
       // Event handler for clicking on a post title
       $(document).on('click', '.post-title', function() {
         var postId = $(this).data('post-id'); 
-        // Call the fetchPostData function to retrieve and display the post data
         fetchPostData(postId);
       });
 
       // Function to fetch post content and comments
       function fetchPostData(postId) {
         $.ajax({
-          url: '/articles/' + postId, // Change the URL to the appropriate server route for fetching post data
+          url: '/articles/' + postId, 
           method: 'GET',
           success: function(response) {
             $('#postTitles').fadeOut()
             $('#postDetail').fadeIn()
-            // Assuming the response contains post data (content and comments)
-            var postData = response.post; // Adjust this based on the actual response format
+            var postData = response.post; 
             // Update the post content
             const titlePost =  $('<h2>').addClass('card-title headTitle').text(postData.title)
             var postContentContainer = $('#postContent');
             postContentContainerText = $('<span>').addClass('postContentText').text(postData.content)
             postContentContainer.append(titlePost,postContentContainerText)
-            // postContentContainer.html(postData.content);
-            // Update the comments
             var commentsContainer = $('#commentsContainer');
             commentsContainer.empty();
             for (var i = 0; i < postData.comments.length; i++) {
@@ -351,6 +288,11 @@ $(document).ready(function() {
               var lineHr = $('<hr>').addClass('my-0')
               commentsContainer.append(card_body, lineHr);
             }
+            if(postData.comments.length<1)
+              $('.subTitle').text('No comments')
+            else{
+              $('.subTitle').text('Recent comments')
+            }
             $('#postComments').append(commentsContainer)
             $('#postDetail').append(postContentContainer, $('#postComments'));
           },
@@ -360,31 +302,25 @@ $(document).ready(function() {
         });
       }
 
-
-
       //get listes of categories for database
-      // Fetch and display post titles on the home page
       $.ajax({
-        url: '/categories', // Change the URL to the appropriate server route for fetching post titles
+        url: '/categories', 
         method: 'GET',
         success: function(response) {
-          // Assuming the response is an array of post titles
           var categories = response.categories;
-          // Iterate over the post titles and append them to the container
           var categoriesListContainer = $('#categoriesList');
           for (var i = 0; i < categories.length; i++) {
             var category = categories[i].name;
             var liElementLink = $('<a>')
                   .addClass('category-title')
-                  .attr('href', '#') // Placeholder link, change this to match your route for displaying a single post
-                  .data('categorie-id', categories[i].id) // Add the post ID as a data attribute
+                  .attr('href', '#') 
+                  .data('categorie-id', categories[i].id) 
                   .text(category)
                   .on('click', function(event) {
-                    event.preventDefault(); // Prevent the default link behavior
+                    event.preventDefault();
                 
                     var idCategorie = $(this).data('categorie-id');
-                    // console.log(idCategorie)
-                    home(idCategorie); // Call the home method with the idCategorie parameter
+                    home(idCategorie); 
                   });
             var liElement = $('<li>').addClass('list-group-item d-flex justify-content-between align-items-center');
             liElement.append(liElementLink)
@@ -399,36 +335,48 @@ $(document).ready(function() {
       });
 
 
-
       //Selecting user's info from DB 
       $('.nav-link[data-link="userProfile"]').click(function(e) {
-          e.preventDefault(); // Prevent the default navigation behavior
+          e.preventDefault(); 
           const {userId, userName, userEmail}=getUserInformationFromToken();
-          // Update the user's name in the profile section
           $('#userName').text(userName);
           $('#userprofileEmail').text(userEmail);
       });
 
 
+      //get user's info from token 
       function getUserInformationFromToken(){
           const token = $.cookie('token')
-          // Decode the token payload using the atob function
           const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-
-          // Access the user ID from the decoded token payload
           const userId = tokenPayload.userId;
-        // Access the user name from the decoded token payload
           const userName = tokenPayload.name;
           const userEmail = tokenPayload.email;
           return {userId, userName, userEmail}
       }
 
+      //get user's ID from token 
+      function getUserIDFromToken(){
+          const token = $.cookie('token')
+          const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+          const userId = tokenPayload.userId;
+          return userId;
+      }
+
+      //get user's ID from token 
+      function getUserRoleFromToken(){
+        const token = $.cookie('token')
+        // Decode the token payload using the atob function
+        const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+        // Access the user ID from the decoded token payload
+        const userRole = tokenPayload.role;
+        return userRole;
+    }
+
 
       //Edit Profile By User : 
       //Selecting user's info from DB 
       $('.nav-link[data-link="profileEdit"]').click(function(e) {
-          e.preventDefault(); // Prevent the default navigation behavior
-          // AJAX request to fetch user profile
+          e.preventDefault(); 
           const {userId, userName, userEmail}=getUserInformationFromToken();
           // Update the user's name in the profile section
           $('#idEdit').val(userId);
@@ -439,76 +387,216 @@ $(document).ready(function() {
 
 
 
-    //validation of the of creatign account
+    // validation of the of creatign account
     $('#EditProfileForm').submit(function(e) {
-      e.preventDefault(); // Prevent form submission
-      // Perform name, email, and password validation
-      var id = $('#idEdit').val();
-      var name = $('#nameEdit').val();
-      var email = $('#emailEdit').val();
-      var password = $('#passwordEdit').val();
-      var repassword = $('#repasswordEdit').val();
-      // Validate name: accept characters that can be used in a name (letters, spaces, and hyphens)
-      var nameRegex = /^[a-zA-Z\s-]+$/;
-      $('#nameEdit, #emailEdit, #passwordEdit, #repasswordEdit').removeClass('invalid-input'); // Remove 'invalid-input' class from all input fields
-      if (!nameRegex.test(name)) {
-        $('#errorDivP').html('Invalid Name')
-        $('#errorDiv').fadeIn();
-        $('#nameEdit').addClass('invalid-input');
-        return;
-      }
-      // Validate email format using a regular expression
-      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-          $('#emailEdit').addClass('invalid-input');
-          $('#errorDivP').html('Invalid Email')
+        e.preventDefault(); 
+        var id = $('#idEdit').val();
+        var name = $('#nameEdit').val();
+        var email = $('#emailEdit').val();
+        var password = $('#passwordEdit').val();
+        var repassword = $('#repasswordEdit').val();
+        // Validate name: accept characters that can be used in a name (letters, spaces, and hyphens)
+        var nameRegex = /^[a-zA-Z\s-]+$/;
+        $('#nameEdit, #emailEdit, #passwordEdit, #repasswordEdit').removeClass('invalid-input'); // Remove 'invalid-input' class from all input fields
+        if (!nameRegex.test(name)) {
+          $('#errorDivP').html('Invalid Name')
           $('#errorDiv').fadeIn();
-        return;
-      }
-      // Validate password length
-      if (password.length < 6) {
-        $('#passwordEdit').addClass('invalid-input');
-        $('#errorDivP').html('Password must be more than 6 characters')
-        $('#errorDiv').fadeIn();
-        return;
-      }
-      // Check if password and re-entered password match
-      if (password !== repassword) {
-        $('#errorDivP').html('password doesn\'t match')
-        $('#errorDiv').fadeIn();
-        $('#passwordEdit, #repasswordEdit').addClass('invalid-input');
-        // alert('Passwords do not match.');
-        return;
-      }
-  
-      // If validation passes, send the data to the server
-      var userData = {
-        id:id,
-        name: name,
-        email: email,
-        password: password
-      };
-      console.log(userData)
-      $.ajax({
-        url: '/users',
-        method: 'PATCH',
-        data: userData,
-        success: function(response) {
-          // console.log(userData)
-          $('.content').addClass('d-none');
-          $('#userProfile').removeClass('d-none');
+          $('#nameEdit').addClass('invalid-input');
+          return;
+        }
+        // Validate email format using a regular expression
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            $('#emailEdit').addClass('invalid-input');
+            $('#errorDivP').html('Invalid Email')
+            $('#errorDiv').fadeIn();
+          return;
+        }
+        // Validate password length
+        if (password.length < 6) {
+          $('#passwordEdit').addClass('invalid-input');
+          $('#errorDivP').html('Password must be more than 6 characters')
+          $('#errorDiv').fadeIn();
+          return;
+        }
+        // Check if password and re-entered password match
+        if (password !== repassword) {
+          $('#errorDivP').html('password doesn\'t match')
+          $('#errorDiv').fadeIn();
+          $('#passwordEdit, #repasswordEdit').addClass('invalid-input');
+          // alert('Passwords do not match.');
+          return;
+        }
+    
+        // If validation passes, send the data to the server
+        var userData = {
+          id:id,
+          name: name,
+          email: email,
+          password: password
+        };
+        $.ajax({
+          url: '/users',
+          method: 'PATCH',
+          data: userData,
+          success: function(response) {
+            $('.nav-link[data-link="profileMyPosts"]').trigger('click');
 
-          $('#editSuccessP').html('Modification is done')
-          $('#editSuccess').fadeIn();
-          $('#closeEditSuccess').click(function() {
-          $('#editSuccess').fadeOut();
-      });
+            $('#editSuccessP').html('Modification is done')
+            $('#editSuccess').fadeIn();
+            $('#closeEditSuccess').click(function() {
+            $('#editSuccess').fadeOut();
+        });
+          },
+          error: function(error) {
+            console.log('Error occurred', error);
+          }
+        });
+    });
+
+    //adding a post 
+    $('#addPostForm').submit(function(e) {
+        e.preventDefault(); 
+        var title = $('#postTitleAdd').val();
+        var content = $('#postContentAdd').val();
+        var photo = $('#postPhotoAdd').val(); 
+        const userId = getUserIDFromToken()
+        var postData = {
+          authorId:userId,
+          title: title,
+          content: content,
+          photo: photo
+        };
+        console.log(postData)
+        $.ajax({
+          url: '/articles',
+          method: 'POST',
+          data: postData,
+          success: function(response) {
+            $('.nav-link[data-link="profileMyPosts"]').trigger('click');
+          },
+          error: function(error) {
+            console.log('Error adding post:', error);
+          }
+        });
+  });
+
+
+  //Editing a post 
+  $('#editPostForm').submit(function(e) {
+      e.preventDefault(); 
+      var title = $('#postTitleEdit').val();
+      var content = $('#postContentEdit').val();
+      var photo = $('#postPhotoEdit').val(); 
+      var postId = $('#postIDEdit').val(); 
+      var postData = {
+        id:postId,
+        title: title,
+        content: content,
+        photo: photo
+      };
+      console.log(postData)
+      $.ajax({
+        url: '/articles',
+        method: 'PATCH',
+        data: postData,
+        success: function(response) {
+          $('.nav-link[data-link="profileMyPosts"]').trigger('click');
         },
         error: function(error) {
-          console.log('Error occurred while fetching post titles:', error);
+
+          console.log('Error adding post:', error);
         }
       });
+  });
+
+
+  //Selecting user's info from DB 
+  $('.nav-link[data-link="profileMyPosts"]').click(function(e) {
+    e.preventDefault(); 
+    const userId=getUserIDFromToken();
+    console.log(userId)
+    $.ajax({
+      url: '/articles/user/'+userId,
+      method: 'GET',
+      success: function(response) {
+        var postsHTML = '';
+        response.posts.forEach(function(post) {
+          const datePub = new Date(post.createdAt);
+          formatedDate = datePub.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          });
+          const postId = post.id;
+          const editButton = `<button class="btn btn-primary edit-post" data-post-id="${postId}" data-link="profileEditPost">Edit Post</button>`;
+          const deleteButton = `<button class="btn btn-danger delete-post" data-post-id="${postId}">Delete Post</button>`;
+          postsHTML += `
+            <div class="col-md-8 offset-md-2">
+              <div class="post-container">
+                <h1 class="post-title">${post.title}</h1>
+                <p class="post-date">Published on ${formatedDate}</p>
+                <div class="post-content">
+                  <p>${post.content}</p>
+                </div>
+                <div class="action-buttons">
+                  ${editButton}
+                  ${deleteButton}
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        $('#profileMyPosts').html(postsHTML);
+      },
+      error: function(error) {
+        // Handle error response
+        console.log('Error in Retreiving posts:', error);
+      }
     });
+});
+
+// script for edit post
+$(document).on('click', '.edit-post', function(e) {
+    e.preventDefault()
+    const postId = $(this).data('post-id');
+    $.ajax({
+      url: '/articles/' + postId, 
+      method: 'GET',
+      success: function(response) {
+        $('.content').addClass('d-none');
+        $('#profileEditPost').removeClass('d-none');  
+        
+        $('#postIDEdit').val(response.post.id);
+        $('#postTitleEdit').val(response.post.title);
+        $('#postContentEdit').val(response.post.content);
+      },
+      error: function(error) {
+        console.log('Error retrieving post data:', error);
+      }
+    });
+});
+
+
+
+//delete post 
+  $(document).on('click', '.delete-post', function(e) {
+      e.preventDefault();
+      const postId = $(this).data('post-id');
+      console.log('Deleting post with ID:', postId);
+      $.ajax({
+        url: '/articles/' + postId,
+        method: 'DELETE',
+        success: function(response) {
+          $('.nav-link[data-link="profileMyPosts"]').trigger('click');
+        },
+        error: function(error) {
+          // Handle error response
+          console.log('Error deleting post:', error);
+        }
+      });
+  });
+
 
 
 

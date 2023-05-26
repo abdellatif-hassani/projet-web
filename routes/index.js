@@ -14,9 +14,7 @@ const prisma = new PrismaClient();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  const tokenCookie = req.cookies.token;
-  // sending tokenCookie to the index.ejs file to test if the user is authentificated
-  res.render('index', { tokenCookie });
+  res.render('index');
 });
 
 
@@ -43,12 +41,8 @@ router.post('/login', async (req, res) => {
 
   res.cookie("token", token, {
     // httpOnly: true,
-    expires: new Date(Date.now() + 900000)
-    // secure: true,
-    // maxAge: 10000000000,
-    // signed:true
+    expires: new Date(Date.now() + 2 * 60 * 60 * 1000), //2H like process.env.EXPIRED_TIME
   })
-  // return res.redirect('/')
   return res.json({redirect :'/', message: 'Logged in successfully'});
 });
 

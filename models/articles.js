@@ -17,8 +17,22 @@ const getAllPosts = (take = 10 , skip = 0)=>{
     });
 }   
 
+// Return posts of a user
+const getPostsOfUser = (userId) => {
+  return prisma.post.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: {
+      author: true,
+    },
+    where: {
+      authorId: userId, // Filter posts by user ID
+    },
+  });
+};
 
-//return all Posts
+//return Posts of a categorie
 const getPostsOfCategory = (id) => {
     return prisma.post.findMany({
       orderBy: {
@@ -56,28 +70,72 @@ const getPost = (id) => {
     });
   };
 
+
 //Add a Post 
-const addPost = (article)=>{
-    return prisma.post.create({
-        data: article
-    })  
-}   
+const addPost = async (postData) => {
+  try {
+    // Destructure the properties from the postData object
+    const { authorId, title, content, photo } = postData;
+    const parsedAuthorId = parseInt(authorId, 10);
+    // Create a new post using the received data
+    const post = await prisma.post.create({
+      data: {
+        title,
+        content,
+        photo,
+        author: {
+          connect: { id: parsedAuthorId }
+        }
+      },
+      include: {
+        author: true
+      }
+    });
+
+    return post;
+  } catch (error) {
+    throw new Error('Error adding post');
+  }
+};
+
+
 
 //Delete a Post 
-const deletePost = (id)=>{
-    return prisma.post.delete({
-        where: {id},
-    })
+const deletePost = async(postId)=>{
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      include: { comments: true },
+    });
+
+    if (!post) {
+      throw new Error('Post not found');
+    }
+
+    await prisma.$transaction([
+      prisma.comment.deleteMany({ where: { postId: post.id } }),
+      prisma.post.delete({ where: { id: post.id } }), 
+    ]);
+
+    return post;
+  } catch (error) {
+    console.error('Error deleting post and associated comments:', error);
+  }
 }
 
 //Update a Post
 const updatePost = (article)=>{
+  const postId = parseInt(article.id);
     return prisma.post.update({
-        where: {id: article.id},
-        data: article
+        where: {id: postId},
+        data: {
+          title: article.title,
+          content: article.content,
+          photo: article.photo
+        }
     })
 }
 
 
-module.exports = {getAllPosts, getPost,  
+module.exports = {getAllPosts, getPost, getPostsOfUser,
     addPost, deletePost, updatePost, getPostsOfCategory}
