@@ -64,7 +64,8 @@ const getPost = (id) => {
             user: {
               select: { name: true }
             }
-          }
+          },
+          take:10
         },
         author: true
       }
