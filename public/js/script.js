@@ -45,6 +45,7 @@ $(document).ready(function() {
             type: 'POST',
             success: function(response) {
               if (response.message === 'Logged out successfully') {
+                testToken();
                 $('.content').addClass('d-none');
                 $('#home').removeClass('d-none');
                 $('#postContent').empty();
