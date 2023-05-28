@@ -45,9 +45,10 @@ $(document).ready(function() {
             type: 'POST',
             success: function(response) {
               if (response.message === 'Logged out successfully') {
-                testToken();
                 $('.content').addClass('d-none');
                 $('#home').removeClass('d-none');
+                $('#postContent').empty();
+                $('#postTitles').fadeIn();
                 $('#logoutAlert').fadeIn();
                 
               } else {
@@ -85,6 +86,8 @@ $(document).ready(function() {
             testToken();
             $('.content').addClass('d-none');
             $('#home').removeClass('d-none');
+            $('#postContent').empty();
+            $('#postTitles').fadeIn();
             $('#successAlert').fadeIn();
           },
           error: function(xhr) {
@@ -290,6 +293,44 @@ $(document).ready(function() {
               var lineHr = $('<hr>').addClass('my-0')
               commentsContainer.append(card_body, lineHr);
             }
+            var token = $.cookie('token')
+            if (token == undefined){
+              var commentSection=`
+                <div class="alert alert-warning">
+                  You need to sign in to add comments.
+                  <a href="#" class='nav-link alert-link" id="loginFromComment" data-link='loginFromComment'>
+                    Sign in
+                  </a>
+                </div>
+              `
+            }else{
+              var commentSection = `
+              <div class="cardComment">
+              <div class="row">
+              <div class="col-10">
+              <div class="comment-box ml-2">
+              <h4>Add a comment</h4>
+              <form method='post' id='commentSection'>
+                <div class="comment-area">
+                <textarea class="form-control" placeholder="what is your view?" rows="4"></textarea>
+                </div>
+                <div class="comment-btns mt-2">
+                <div class="row">
+                <div class="col-6">
+                  <div class="pull-right">
+                    <button class="btn btn-success send btn-sm">Add</button> 
+                  </div>
+                </div>
+              </form>
+              </div>
+              </div>
+              </div>
+              </div>
+              </div>
+              </div> 
+              `;
+            }
+            commentsContainer.append(commentSection);
             if(postData.comments.length<1)
               $('.subTitle').text('No comments')
             else{
@@ -303,6 +344,13 @@ $(document).ready(function() {
           }
         });
       }
+
+      $(document).on('click', '#loginFromComment', function(e) {
+          e.preventDefault();  
+          console.log('HASSANI')
+          $('.content').addClass('d-none');
+          $('#login').removeClass('d-none');
+      });
 
       //get listes of categories for database
       $.ajax({

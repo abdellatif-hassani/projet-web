@@ -127,13 +127,15 @@ const deletePost = async(postId)=>{
 
 //Update a Post
 const updatePost = (article)=>{
-  const postId = parseInt(article.id);
+    const postId = parseInt(article.id);
+    const randomInt = Math.floor(Math.random() * (1000 - 100 + 1)) + 100;
+    photoSrc = `https://picsum.photos/300/100/?${randomInt}`
     return prisma.post.update({
         where: {id: postId},
         data: {
           title: article.title,
           content: article.content,
-          photo: article.photo
+          photo: photoSrc
         }
     })
 }
